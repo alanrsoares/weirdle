@@ -25,9 +25,9 @@ const KEYS = [
   ["enter", "Z", "X", "C", "V", "B", "N", "M", "backspace"],
 ];
 
-export const VALID_KEYS = KEYS.flatMap((row) => row.map((key) => key.toLowerCase())).filter(
-  Boolean
-);
+export const VALID_KEYS = KEYS.flatMap((row) =>
+  row.map((key) => key.toLowerCase())
+).filter(Boolean);
 
 function isValidKey(key: string) {
   return VALID_KEYS.includes(key);
@@ -49,9 +49,12 @@ export default function Keyboard(props: Props) {
   }, []);
 
   return (
-    <div className="grid gap-4 h-min">
+    <div className="grid gap-4 h-min mx-auto">
       {KEYS.map((row, i) => (
-        <div className="flex justify-evenly touch-manipulation gap-2" key={`row-${i}`}>
+        <div
+          className="flex justify-evenly touch-manipulation gap-2"
+          key={`row-${i}`}
+        >
           {row.map((key, j) =>
             !key ? (
               <div key={`empty-${j}`} className="w-2" />
@@ -62,7 +65,9 @@ export default function Keyboard(props: Props) {
                 onClick={props.onKeyPress.bind(null, key.toLowerCase())}
                 style={props.disabled ? { opacity: 0.5 } : {}}
               >
-                {key in MAPPABLE_KEYS ? MAPPABLE_KEYS[key as MappableKeys] : key}
+                {key in MAPPABLE_KEYS
+                  ? MAPPABLE_KEYS[key as MappableKeys]
+                  : key}
               </KeyButton>
             )
           )}
@@ -72,4 +77,4 @@ export default function Keyboard(props: Props) {
   );
 }
 
-export const KeyButton = styled.button`bg-gray-200 hover:bg-gray-300 active:opacity-60 md:p-4 p-2 rounded-md md:text-xl text-sm font-bold transition-all`;
+export const KeyButton = styled.button`bg-gray-300 hover:bg-gray-400 active:opacity-60 md:p-3 p-2 rounded-md md:text-xl text-sm font-bold transition-all`;

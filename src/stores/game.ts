@@ -63,7 +63,7 @@ export const useGameStore = createStore(
               };
             });
 
-            toast.error(`Invalid word: ${word}`);
+            toast.error(`Not in word list: ${word}`);
             return;
           }
         } catch (error) {
@@ -80,7 +80,9 @@ export const useGameStore = createStore(
             return;
           }
 
-          state.grid[state.cursor.y] = row.map((x) => getNextTile(x, state.secret));
+          state.grid[state.cursor.y] = row.map((x) =>
+            getNextTile(x, state.secret)
+          );
 
           if (!isLastRow) {
             state.cursor.y++;
@@ -90,7 +92,6 @@ export const useGameStore = createStore(
       },
       delete() {
         set(({ state }) => {
-          console.log(`delete ${JSON.stringify(state.cursor)}`);
           const { cursor } = state;
           const row = state.grid[cursor.y];
           const tile = row[cursor.x];
@@ -111,7 +112,6 @@ export const useGameStore = createStore(
       },
       insert(key: string) {
         set(({ state }) => {
-          console.log(`insert ${key} ${JSON.stringify(state.cursor)}`);
           const { cursor } = state;
           const row = state.grid[cursor.y];
           const tile = row[cursor.x];
