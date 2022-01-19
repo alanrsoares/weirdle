@@ -1,5 +1,5 @@
-import { createStore } from "zustand-immer-store";
 import { toast } from "react-toastify";
+import { createStore } from "zustand-immer-store";
 
 import { makeEmptyGrid, TileProps } from "components/Grid";
 import { getSecretWord, verifyWord } from "lib/api-client";
