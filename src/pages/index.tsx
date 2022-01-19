@@ -2,9 +2,9 @@ import Head from "next/head";
 import { useCallback, useEffect } from "react";
 
 import { useGameStore } from "stores/game";
-import Header from "components/header";
-import Grid from "components/grid";
-import Keyboard, { isMappableKey } from "components/keyboard";
+import Header from "components/Header";
+import Grid from "components/Grid";
+import Keyboard, { isMappableKey } from "components/Keyboard";
 
 export default function Home() {
   const { state, actions } = useGameStore();

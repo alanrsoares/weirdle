@@ -1,8 +1,8 @@
 import { createStore } from "zustand-immer-store";
-
-import { makeEmptyGrid, TileProps } from "components/grid";
-import { getSecretWord, verifyWord } from "lib/api-client";
 import { toast } from "react-toastify";
+
+import { makeEmptyGrid, TileProps } from "components/Grid";
+import { getSecretWord, verifyWord } from "lib/api-client";
 
 const EMPTY_GRID = makeEmptyGrid();
 

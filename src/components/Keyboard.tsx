@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styled from "tailwind-styled-components";
+import tw from "tailwind-styled-components";
 
 import { BackspaceIcon } from "./icons";
 
@@ -77,4 +77,4 @@ export default function Keyboard(props: Props) {
   );
 }
 
-export const KeyButton = styled.button`bg-gray-300 hover:bg-gray-400 active:opacity-60 md:p-3 p-2 rounded-md md:text-xl text-sm font-bold transition-all`;
+export const KeyButton = tw.button`bg-gray-300 hover:bg-gray-400 active:opacity-60 md:p-3 p-2 rounded-md md:text-xl text-sm font-bold transition-all md:min-w-[2.5rem] min-w-[2rem]`;

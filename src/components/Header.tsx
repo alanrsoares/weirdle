@@ -1,4 +1,4 @@
-import { IconButton } from "./button";
+import { IconButton } from "./Button";
 import { BarChartIcon, CogIcon, HelpIcon } from "./icons";
 
 const APP_TITLE = "wordle";
