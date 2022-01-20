@@ -1665,7 +1665,7 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-next@latest:
+next@12.0.8:
   version "12.0.8"
   resolved "https://registry.yarnpkg.com/next/-/next-12.0.8.tgz#29138f7cdd045e4bbba466af45bf430e769634b4"
   integrity sha512-g5c1Kuh1F8tSXJn2rVvzYBzqe9EXaR6+rY3/KrQ7y0D9FueRLfHI35wM0DRadDcPSc3+vncspfhYH3jnYE/KjA==
@@ -2556,10 +2556,10 @@ yaml@^1.10.0, yaml@^1.10.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
-zustand-immer-store@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/zustand-immer-store/-/zustand-immer-store-0.5.0.tgz#4e1588fb05e8ef27c4e9d4e2452d54ff179c1c3d"
-  integrity sha512-yljKcWXpMJ1Wl3uLXK7NybiHCzo8xrWTVn3TEl2QV2BOs5u9GuyIShovkxgRefhyJd2i8Ln6dgtyo4J2yb2WHQ==
+zustand-immer-store@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/zustand-immer-store/-/zustand-immer-store-0.6.0.tgz#5abfb24110f76e488009f543ee2c8871a8892f0e"
+  integrity sha512-50GwD6NdYTeaZS5rZDB2PMtiocrQwrQmiogkfy4wiGrq0usEps3CqUV+GHPYwODAoAhX2g1QXztowCWp1PyAgQ==
 
 zustand@^3.6.9:
   version "3.6.9"

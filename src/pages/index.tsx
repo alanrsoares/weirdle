@@ -1,17 +1,17 @@
 import Head from "next/head";
 import { useCallback, useEffect } from "react";
 
-import { useGameStore, useGameStoreSelector } from "stores/game";
+import { useGameStore } from "stores/game";
 import Header from "components/Header";
 import Grid from "components/Grid";
 import Keyboard, { isMappableKey } from "components/Keyboard";
 
-const { selectors } = useGameStore;
+const { useSelector } = useGameStore;
 
 export default function Home() {
   const { state, actions } = useGameStore();
 
-  const keys = useGameStoreSelector(selectors!.getUsedKeys);
+  const keys = useSelector("getUsedKeys");
 
   useEffect(() => {
     actions.init();
