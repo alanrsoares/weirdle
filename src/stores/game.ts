@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import { createStore } from "zustand-immer-store";
 
+import * as api from "lib/api-client";
 import { makeEmptyGrid, TileProps } from "components/Grid";
-import { getSecretWord, verifyWord } from "lib/api-client";
 
 const EMPTY_GRID = makeEmptyGrid();
 
@@ -14,7 +14,7 @@ function getNextTile(tile: TileProps, secret: string): TileProps {
   const exists = secret.includes(key);
 
   if (exists) {
-    const exact = tile.coordinates.x === secret.indexOf(key);
+    const exact = secret[tile.cursor.x] === key;
 
     return {
       ...tile,
@@ -26,6 +26,24 @@ function getNextTile(tile: TileProps, secret: string): TileProps {
     ...tile,
     variant: "missing",
   };
+}
+
+function findLastNonEmptyTile(row: TileProps[]) {
+  return row.reduce<TileProps | null>(
+    (acc, tile) => (tile.children ? tile : acc),
+    null
+  );
+}
+
+function getRowWord(row: TileProps[]) {
+  return row
+    .map((x) => x.children.trim())
+    .filter(Boolean)
+    .join("");
+}
+
+function didWin(row: TileProps[]) {
+  return row.every((x) => x.variant === "placed");
 }
 
 export const useGameStore = createStore(
@@ -48,13 +66,10 @@ export const useGameStore = createStore(
           return;
         }
 
-        const word = grid[cursor.y]
-          .map((x) => x.children.trim())
-          .filter(Boolean)
-          .join("");
+        const word = getRowWord(grid[cursor.y]);
 
         try {
-          const result = await verifyWord(word);
+          const result = await api.verifyWord(word);
 
           if (!result.valid) {
             set(({ state }) => {
@@ -84,6 +99,12 @@ export const useGameStore = createStore(
             getNextTile(x, state.secret)
           );
 
+          const won = didWin(state.grid[state.cursor.y]);
+
+          if (won) {
+            toast.success("Damn son, you good! 🎉");
+          }
+
           if (!isLastRow) {
             state.cursor.y++;
             state.cursor.x = 0;
@@ -92,22 +113,23 @@ export const useGameStore = createStore(
       },
       delete() {
         set(({ state }) => {
-          const { cursor } = state;
-          const row = state.grid[cursor.y];
-          const tile = row[cursor.x];
+          const lastNonEmptyTile = findLastNonEmptyTile(
+            state.grid[state.cursor.y]
+          );
 
-          const isFirstColumn = cursor.x === 0;
-
-          state.grid[cursor.y][cursor.x] = {
-            ...tile,
-            children: "",
-            variant: "empty",
-          };
-
-          if (!isFirstColumn) {
-            // go back 1 column
-            state.cursor.x--;
+          if (!lastNonEmptyTile) {
+            // nothing to to here :jetpack:
+            return;
           }
+
+          // set cursor to lastNonEmptyTile's cursor
+          state.cursor = lastNonEmptyTile.cursor;
+          const { y, x } = state.cursor;
+
+          const target = state.grid[y][x];
+
+          target.children = "";
+          target.variant = "empty";
         });
       },
       insert(key: string) {
@@ -132,11 +154,11 @@ export const useGameStore = createStore(
           store.state.isLoading = true;
         });
 
-        const data = await getSecretWord();
+        const result = await api.getSecretWord();
 
         set((store) => {
           store.state.isLoading = false;
-          store.state.secret = data.secret;
+          store.state.secret = result.secret;
         });
       },
     }),

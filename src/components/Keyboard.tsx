@@ -33,11 +33,11 @@ function isValidKey(key: string) {
   return VALID_KEYS.includes(key);
 }
 
-export default function Keyboard(props: Props) {
+export default function Keyboard({ onKeyPress, disabled }: Props) {
   useEffect(() => {
     function onKeyUp(e: KeyboardEvent) {
       if (isValidKey(e.key.toLowerCase())) {
-        props.onKeyPress(e.key.toLowerCase());
+        onKeyPress(e.key.toLowerCase());
       }
     }
 
@@ -46,10 +46,10 @@ export default function Keyboard(props: Props) {
     return () => {
       document.removeEventListener("keyup", onKeyUp);
     };
-  }, []);
+  }, [onKeyPress]);
 
   return (
-    <div className="grid gap-4 h-min mx-auto">
+    <div className="grid gap-4 h-min mx-auto select-none">
       {KEYS.map((row, i) => (
         <div
           className="flex justify-evenly touch-manipulation gap-2"
@@ -60,14 +60,12 @@ export default function Keyboard(props: Props) {
               <div key={`empty-${j}`} className="w-2" />
             ) : (
               <KeyButton
-                disabled={props.disabled}
+                disabled={disabled}
                 key={key}
-                onClick={props.onKeyPress.bind(null, key.toLowerCase())}
-                style={props.disabled ? { opacity: 0.5 } : {}}
+                onClick={onKeyPress.bind(null, key.toLowerCase())}
+                style={disabled ? { opacity: 0.5 } : {}}
               >
-                {key in MAPPABLE_KEYS
-                  ? MAPPABLE_KEYS[key as MappableKeys]
-                  : key}
+                {isMappableKey(key) ? MAPPABLE_KEYS[key] : key}
               </KeyButton>
             )
           )}

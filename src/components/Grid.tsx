@@ -4,7 +4,7 @@ import clsx from "clsx";
 export type TileProps = {
   variant: "empty" | "placed" | "misplaced" | "missing";
   children: string;
-  coordinates: {
+  cursor: {
     y: number;
     x: number;
   };
@@ -22,7 +22,7 @@ export function makeEmptyGrid(rows = 6, columns = 5) {
 
     for (let x = 0; x < columns; x++) {
       row.push({
-        coordinates: { y, x },
+        cursor: { y, x },
         children: "",
         variant: "empty",
       });
@@ -40,9 +40,9 @@ export default function Grid(props: Props) {
       {props.data.flatMap((row) =>
         row.map((tile) => (
           <Tile
-            key={`${tile.coordinates.y}-${tile.coordinates.x}`}
+            key={`${tile.cursor.y}-${tile.cursor.x}`}
             variant={tile.variant}
-            coordinates={tile.coordinates}
+            cursor={tile.cursor}
           >
             {tile.children}
           </Tile>
@@ -58,7 +58,8 @@ export const Tile: FC<TileProps> = (props) => (
       "border-2 grid place-items-center select-none uppercase md:text-2xl text-xl md:h-[60px] md:w-[60px] h-[50px] w-[50px]",
       {
         "bg-green-500 text-white border-gree-700": props.variant === "placed",
-        "bg-yellow-500 text-white border-yellow-700": props.variant === "misplaced",
+        "bg-yellow-500 text-white border-yellow-700":
+          props.variant === "misplaced",
         "bg-gray-600 text-white": props.variant === "missing",
       }
     )}

@@ -11,22 +11,25 @@ export default function Home() {
 
   useEffect(() => {
     actions.init();
-  }, []);
+  }, [actions]);
 
-  const handleKeyPress = useCallback((key: string) => {
-    if (isMappableKey(key)) {
-      switch (key) {
-        case "backspace":
-          actions.delete();
-          break;
-        case "enter":
-          actions.reveal();
-          break;
+  const handleKeyPress = useCallback(
+    (key: string) => {
+      if (isMappableKey(key)) {
+        switch (key) {
+          case "backspace":
+            actions.delete();
+            break;
+          case "enter":
+            actions.reveal();
+            break;
+        }
+        return;
       }
-      return;
-    }
-    actions.insert(key);
-  }, []);
+      actions.insert(key);
+    },
+    [actions]
+  );
 
   return (
     <div className="flex flex-col max-w-lg w-full m-auto min-h-screen">
@@ -36,6 +39,7 @@ export default function Home() {
       </Head>
       <Header />
       <main className="flex-1 p-4 flex flex-col justify-between">
+        {state.secret}
         <Grid data={state.grid} />
         <Keyboard disabled={state.isLoading} onKeyPress={handleKeyPress} />
       </main>
