@@ -3,11 +3,6 @@ import tw from "tailwind-styled-components";
 
 import { BackspaceIcon } from "./icons";
 
-type Props = {
-  onKeyPress: (key: string) => void;
-  disabled?: boolean;
-};
-
 export const MAPPABLE_KEYS = {
   backspace: <BackspaceIcon />,
   enter: "ENTER",
@@ -33,6 +28,11 @@ function isValidKey(key: string) {
   return VALID_KEYS.includes(key);
 }
 
+type Props = {
+  onKeyPress: (key: string) => void;
+  disabled?: boolean;
+};
+
 export default function Keyboard({ onKeyPress, disabled }: Props) {
   useEffect(() => {
     function onKeyUp(e: KeyboardEvent) {
@@ -56,7 +56,7 @@ export default function Keyboard({ onKeyPress, disabled }: Props) {
           key={`row-${i}`}
         >
           {row.map((key, j) =>
-            !key ? (
+            key === "" ? (
               <div key={`empty-${j}`} className="w-2" />
             ) : (
               <KeyButton
