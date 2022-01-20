@@ -39,7 +39,6 @@ export default function Home() {
       </Head>
       <Header />
       <main className="flex-1 p-4 flex flex-col justify-between">
-        {state.secret}
         <Grid data={state.grid} />
         <Keyboard disabled={state.isLoading} onKeyPress={handleKeyPress} />
       </main>
