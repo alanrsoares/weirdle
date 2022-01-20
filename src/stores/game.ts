@@ -110,8 +110,22 @@ export const useGameStore = createStore(INITIAL_STATE, {
 
         const won = didWin(state.grid[state.cursor.y]);
 
+        const resetState = () => {
+          set((store) => {
+            store.state = INITIAL_STATE;
+          });
+
+          toast.info("You can play again now!", {
+            onClose: this.init.bind(this),
+          });
+        };
+
         if (won) {
-          toast.success("Damn son, you good! 🎉");
+          toast.success("Damn son, you good! 🎉", { onClose: resetState });
+        } else {
+          if (isLastRow) {
+            toast.warn("Not today, my dude =/", { onClose: resetState });
+          }
         }
 
         if (!isLastRow) {
@@ -172,7 +186,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
         ? (JSON.parse(persisted) as GameState)
         : null;
 
-      if (defaultState) {
+      if (defaultState?.secret) {
         set((store) => {
           store.state = defaultState;
         });
