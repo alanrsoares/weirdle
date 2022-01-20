@@ -110,21 +110,15 @@ export const useGameStore = createStore(INITIAL_STATE, {
 
         const won = didWin(state.grid[state.cursor.y]);
 
-        const resetState = () => {
-          set((store) => {
-            store.state = INITIAL_STATE;
-          });
-
-          toast.info("You can play again now!", {
-            onClose: this.init.bind(this),
-          });
-        };
-
         if (won) {
-          toast.success("Damn son, you good! 🎉", { onClose: resetState });
+          toast.success("Damn son, you good! 🎉", {
+            onClose: this.reset.bind(this),
+          });
         } else {
           if (isLastRow) {
-            toast.warn("Not today, my dude =/", { onClose: resetState });
+            toast.warn("Not today, my dude =/", {
+              onClose: this.reset.bind(this),
+            });
           }
         }
 
@@ -202,6 +196,15 @@ export const useGameStore = createStore(INITIAL_STATE, {
       set((store) => {
         store.state.isLoading = false;
         store.state.secret = result.secret;
+      });
+    },
+    reset() {
+      set((store) => {
+        store.state = INITIAL_STATE;
+      });
+
+      toast.info("You can play again now!", {
+        onClose: this.init.bind(this),
       });
     },
   }),
