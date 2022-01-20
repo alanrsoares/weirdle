@@ -75,4 +75,4 @@ export default function Keyboard({ onKeyPress, disabled }: Props) {
   );
 }
 
-export const KeyButton = tw.button`bg-gray-300 hover:bg-gray-400 active:opacity-60 md:p-3 p-2 rounded-md md:text-xl text-sm font-bold transition-all md:min-w-[2.5rem] min-w-[1.5rem]`;
+export const KeyButton = tw.button`bg-gray-300 hover:bg-gray-400 active:opacity-60 md:p-3 p-2 rounded-md md:text-xl text-sm font-bold transition-all md:min-w-[2.5rem]`;
