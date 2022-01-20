@@ -36,7 +36,7 @@ export default function Home() {
   );
 
   return (
-    <div className="flex flex-col max-w-lg w-full m-auto min-h-screen">
+    <div className="flex flex-col max-w-lg w-full m-auto h-screen">
       <Head>
         <title>React Wordle</title>
         <link rel="icon" href="/favicon.ico" />
@@ -44,6 +44,7 @@ export default function Home() {
       <Header />
       <main className="flex-1 p-4 flex flex-col justify-between">
         <Grid data={state.grid} />
+        <div className="md:hidden flex-1"></div>
         <Keyboard
           usedKeys={keys}
           disabled={state.isLoading}
