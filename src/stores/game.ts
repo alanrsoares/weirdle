@@ -1,21 +1,13 @@
 import { toast } from "react-toastify";
 import { createStore, Selector } from "zustand-immer-store";
-import {
-  dropWhile,
-  filter,
-  flatten,
-  indexBy,
-  pipe,
-  prop,
-  propEq,
-  uniq,
-  uniqBy,
-} from "ramda";
+import { filter, flatten, indexBy, pipe, prop, uniqBy } from "ramda";
 
 import * as api from "lib/api-client";
 import { makeEmptyGrid, TileProps } from "components/Grid";
 
 const EMPTY_GRID = makeEmptyGrid();
+
+const LOCALSTORAGE_KEY = "@stores/game";
 
 export type GameStatus = "new" | "won" | "lost";
 
@@ -174,6 +166,19 @@ export const useGameStore = createStore(INITIAL_STATE, {
       });
     },
     async init() {
+      const persisted = localStorage.getItem("@stores/game");
+
+      const defaultState = persisted
+        ? (JSON.parse(persisted) as GameState)
+        : null;
+
+      if (defaultState) {
+        set((store) => {
+          store.state = defaultState;
+        });
+        return;
+      }
+
       set((store) => {
         store.state.isLoading = true;
       });
@@ -203,3 +208,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
 export function useGameStoreSelector<R>(selector: Selector<GameState, R>) {
   return useGameStore((store) => selector(store.state));
 }
+
+useGameStore.subscribe(({ state }) => {
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(state));
+});

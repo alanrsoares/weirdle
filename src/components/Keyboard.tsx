@@ -50,18 +50,21 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
     };
   }, [onKeyPress]);
 
-  const getKeyColor = useCallback(
+  const getKeyColors = useCallback(
     (key: string) => {
       if (key in usedKeys) {
         const tile = usedKeys[key];
 
         switch (tile.variant) {
+          case "missing":
+            return { background: "rgb(75 85 99)", color: "white" };
           case "misplaced":
             return { background: "rgb(234 179 8 )", color: "white" };
           case "placed":
             return { background: "rgb(34 197 94)", color: "white" };
         }
       }
+
       return {};
     },
     [usedKeys]
@@ -83,7 +86,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
                 key={key}
                 onClick={onKeyPress.bind(null, key.toLowerCase())}
                 style={
-                  disabled ? { opacity: 0.5 } : getKeyColor(key.toLowerCase())
+                  disabled ? { opacity: 0.5 } : getKeyColors(key.toLowerCase())
                 }
               >
                 {isMappableKey(key) ? MAPPABLE_KEYS[key] : key}
