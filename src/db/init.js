@@ -1,25 +1,22 @@
-const path = require("path");
-const fs = require("fs/promises");
+import { resolve } from "path";
+import { readFile, writeFile } from "fs/promises";
+
+import { WORD_LENGTH } from "./config";
 
 async function main() {
   try {
-    const file = await fs.readFile(
-      path.resolve(__dirname, "wordlist.txt"),
-      "utf-8"
-    );
+    const file = await readFile(resolve(__dirname, "wordlist.txt"), "utf-8");
 
     const rows = file.split("\n");
 
     const items = rows.filter(
-      (r) => r.trim().length === 5 && /^[a-z]+$/gi.test(r.trim())
+      (row) =>
+        row.trim().length === WORD_LENGTH && /^[a-z]+$/gi.test(row.trim())
     );
 
     const data = { length: items.length, items };
 
-    await fs.writeFile(
-      path.resolve(__dirname, "db.json"),
-      JSON.stringify(data)
-    );
+    await writeFile(resolve(__dirname, "db.json"), JSON.stringify(data));
   } catch (error) {
     console.log("failed to generate database");
   }
