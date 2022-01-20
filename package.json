@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.5",
-    "clsx": "1.1.1",
+    "clsx": "^1.1.1",
     "immer": "^9.0.12",
     "next": "latest",
     "ramda": "^0.28.0",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "17.0.4",
+    "@types/ramda": "^0.27.64",
     "@types/react": "17.0.38",
     "@types/tailwindcss": "3.0.2",
     "autoprefixer": "^10.4.0",

@@ -19,6 +19,7 @@ const contextClass: Record<TypeOptions, string> = {
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     toast.configure({
+      className: "p-2",
       hideProgressBar: true,
       closeButton: <XIcon className="h-6 w-6 p-1" />,
       toastClassName: (ctx) =>

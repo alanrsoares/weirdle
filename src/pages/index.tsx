@@ -1,13 +1,17 @@
 import Head from "next/head";
 import { useCallback, useEffect } from "react";
 
-import { useGameStore } from "stores/game";
+import { useGameStore, useGameStoreSelector } from "stores/game";
 import Header from "components/Header";
 import Grid from "components/Grid";
 import Keyboard, { isMappableKey } from "components/Keyboard";
 
+const { selectors } = useGameStore;
+
 export default function Home() {
   const { state, actions } = useGameStore();
+
+  const keys = useGameStoreSelector(selectors!.getUsedKeys);
 
   useEffect(() => {
     actions.init();
@@ -21,7 +25,7 @@ export default function Home() {
             actions.delete();
             break;
           case "enter":
-            actions.reveal();
+            actions.guess();
             break;
         }
         return;
@@ -40,7 +44,11 @@ export default function Home() {
       <Header />
       <main className="flex-1 p-4 flex flex-col justify-between">
         <Grid data={state.grid} />
-        <Keyboard disabled={state.isLoading} onKeyPress={handleKeyPress} />
+        <Keyboard
+          usedKeys={keys}
+          disabled={state.isLoading}
+          onKeyPress={handleKeyPress}
+        />
       </main>
     </div>
   );

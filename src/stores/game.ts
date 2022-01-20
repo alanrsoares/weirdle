@@ -1,5 +1,16 @@
 import { toast } from "react-toastify";
-import { createStore } from "zustand-immer-store";
+import { createStore, Selector } from "zustand-immer-store";
+import {
+  dropWhile,
+  filter,
+  flatten,
+  indexBy,
+  pipe,
+  prop,
+  propEq,
+  uniq,
+  uniqBy,
+} from "ramda";
 
 import * as api from "lib/api-client";
 import { makeEmptyGrid, TileProps } from "components/Grid";
@@ -46,121 +57,149 @@ function didWin(row: TileProps[]) {
   return row.every((x) => x.variant === "placed");
 }
 
-export const useGameStore = createStore(
-  {
-    grid: EMPTY_GRID,
-    cursor: { y: 0, x: 0 },
-    secret: "",
-    isLoading: false,
-    status: "new" as GameStatus,
-    error: {
-      message: "",
-    },
+export const INITIAL_STATE = {
+  grid: EMPTY_GRID,
+  cursor: { y: 0, x: 0 },
+  secret: "",
+  isLoading: false,
+  status: "new" as GameStatus,
+  error: {
+    message: "",
   },
-  {
-    createActions: (set, get) => ({
-      async reveal() {
-        const { cursor, grid } = get().state;
+};
 
-        if (cursor.x !== grid[0].length - 1) {
+export type GameState = typeof INITIAL_STATE;
+
+export const useGameStore = createStore(INITIAL_STATE, {
+  createActions: (set, get) => ({
+    /**
+     * Attempts guessing a wordle
+     * @returns
+     */
+    async guess() {
+      const { cursor, grid } = get().state;
+
+      if (cursor.x !== grid[0].length - 1) {
+        return;
+      }
+
+      const word = getRowWord(grid[cursor.y]);
+
+      try {
+        const result = await api.verifyWord(word);
+
+        if (!result.valid) {
+          set(({ state }) => {
+            state.error = {
+              message: "Invalid word",
+            };
+          });
+
+          toast.error(`Not in word list: ${word}`);
+          return;
+        }
+      } catch (error) {
+        console.log("Failed to verify word: %e", error);
+      }
+
+      set(({ state }) => {
+        const row = state.grid[state.cursor.y];
+
+        const isLastColumn = state.cursor.x === row.length - 1;
+        const isLastRow = state.cursor.y === state.grid.length - 1;
+
+        if (!isLastColumn) {
           return;
         }
 
-        const word = getRowWord(grid[cursor.y]);
+        state.grid[state.cursor.y] = row.map((x) =>
+          getNextTile(x, state.secret)
+        );
 
-        try {
-          const result = await api.verifyWord(word);
+        const won = didWin(state.grid[state.cursor.y]);
 
-          if (!result.valid) {
-            set(({ state }) => {
-              state.error = {
-                message: "Invalid word",
-              };
-            });
-
-            toast.error(`Not in word list: ${word}`);
-            return;
-          }
-        } catch (error) {
-          console.log("Failed to verify word: %e", error);
+        if (won) {
+          toast.success("Damn son, you good! 🎉");
         }
 
-        set(({ state }) => {
-          const row = state.grid[state.cursor.y];
+        if (!isLastRow) {
+          state.cursor.y++;
+          state.cursor.x = 0;
+        }
+      });
+    },
+    /**
+     *  Delete tiles from right to left
+     */
+    delete() {
+      set(({ state }) => {
+        const lastNonEmptyTile = findLastNonEmptyTile(
+          state.grid[state.cursor.y]
+        );
 
-          const isLastColumn = state.cursor.x === row.length - 1;
-          const isLastRow = state.cursor.y === state.grid.length - 1;
+        if (!lastNonEmptyTile) {
+          // nothing to to here :jetpack:
+          return;
+        }
 
-          if (!isLastColumn) {
-            return;
-          }
+        // set cursor to lastNonEmptyTile's cursor
+        state.cursor = lastNonEmptyTile.cursor;
+        const { y, x } = state.cursor;
 
-          state.grid[state.cursor.y] = row.map((x) =>
-            getNextTile(x, state.secret)
-          );
+        const target = state.grid[y][x];
 
-          const won = didWin(state.grid[state.cursor.y]);
+        target.children = "";
+        target.variant = "empty";
+      });
+    },
+    /**
+     * Insert new keys from left to right
+     * @param key
+     */
+    insert(key: string) {
+      set(({ state }) => {
+        const { cursor } = state;
+        const row = state.grid[cursor.y];
+        const tile = row[cursor.x];
 
-          if (won) {
-            toast.success("Damn son, you good! 🎉");
-          }
+        const isLastColumn = cursor.x === row.length - 1;
 
-          if (!isLastRow) {
-            state.cursor.y++;
-            state.cursor.x = 0;
-          }
-        });
-      },
-      delete() {
-        set(({ state }) => {
-          const lastNonEmptyTile = findLastNonEmptyTile(
-            state.grid[state.cursor.y]
-          );
+        const nextTile = { ...tile, children: key };
 
-          if (!lastNonEmptyTile) {
-            // nothing to to here :jetpack:
-            return;
-          }
+        state.grid[cursor.y][cursor.x] = nextTile;
 
-          // set cursor to lastNonEmptyTile's cursor
-          state.cursor = lastNonEmptyTile.cursor;
-          const { y, x } = state.cursor;
+        if (!isLastColumn) {
+          state.cursor.x++;
+        }
+      });
+    },
+    async init() {
+      set((store) => {
+        store.state.isLoading = true;
+      });
 
-          const target = state.grid[y][x];
+      const result = await api.getSecretWord();
 
-          target.children = "";
-          target.variant = "empty";
-        });
-      },
-      insert(key: string) {
-        set(({ state }) => {
-          const { cursor } = state;
-          const row = state.grid[cursor.y];
-          const tile = row[cursor.x];
+      set((store) => {
+        store.state.isLoading = false;
+        store.state.secret = result.secret;
+      });
+    },
+  }),
+  selectors: {
+    /**
+     * Get UNIQUE keys used in the current grid
+     */
+    getUsedKeys: pipe(
+      prop("grid"),
+      flatten,
+      filter<TileProps>((x) => Boolean(x.children)),
+      uniqBy(prop("children")),
+      indexBy(prop("children"))
+    ),
+  },
+});
 
-          const isLastColumn = cursor.x === row.length - 1;
-
-          const nextTile = { ...tile, children: key };
-
-          state.grid[cursor.y][cursor.x] = nextTile;
-
-          if (!isLastColumn) {
-            state.cursor.x++;
-          }
-        });
-      },
-      async init() {
-        set((store) => {
-          store.state.isLoading = true;
-        });
-
-        const result = await api.getSecretWord();
-
-        set((store) => {
-          store.state.isLoading = false;
-          store.state.secret = result.secret;
-        });
-      },
-    }),
-  }
-);
+export function useGameStoreSelector<R>(selector: Selector<GameState, R>) {
+  return useGameStore((store) => selector(store.state));
+}

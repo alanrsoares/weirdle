@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import tw from "tailwind-styled-components";
 
 import { BackspaceIcon } from "./icons";
+import { TileProps } from "./Grid";
 
 export const MAPPABLE_KEYS = {
   backspace: <BackspaceIcon />,
@@ -31,9 +32,10 @@ function isValidKey(key: string) {
 type Props = {
   onKeyPress: (key: string) => void;
   disabled?: boolean;
+  usedKeys: Record<string, TileProps>;
 };
 
-export default function Keyboard({ onKeyPress, disabled }: Props) {
+export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
   useEffect(() => {
     function onKeyUp(e: KeyboardEvent) {
       if (isValidKey(e.key.toLowerCase())) {
@@ -47,6 +49,23 @@ export default function Keyboard({ onKeyPress, disabled }: Props) {
       document.removeEventListener("keyup", onKeyUp);
     };
   }, [onKeyPress]);
+
+  const getKeyColor = useCallback(
+    (key: string) => {
+      if (key in usedKeys) {
+        const tile = usedKeys[key];
+
+        switch (tile.variant) {
+          case "misplaced":
+            return { background: "rgb(234 179 8 )", color: "white" };
+          case "placed":
+            return { background: "rgb(34 197 94)", color: "white" };
+        }
+      }
+      return {};
+    },
+    [usedKeys]
+  );
 
   return (
     <div className="grid gap-4 h-min mx-auto select-none">
@@ -63,7 +82,9 @@ export default function Keyboard({ onKeyPress, disabled }: Props) {
                 disabled={disabled}
                 key={key}
                 onClick={onKeyPress.bind(null, key.toLowerCase())}
-                style={disabled ? { opacity: 0.5 } : {}}
+                style={
+                  disabled ? { opacity: 0.5 } : getKeyColor(key.toLowerCase())
+                }
               >
                 {isMappableKey(key) ? MAPPABLE_KEYS[key] : key}
               </KeyButton>
