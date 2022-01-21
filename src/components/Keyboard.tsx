@@ -1,8 +1,9 @@
 import { useCallback, useEffect } from "react";
 import tw from "tailwind-styled-components";
 
+import type { GameTile } from "stores/game";
+
 import { BackspaceIcon } from "./icons";
-import { TileProps } from "./Grid";
 
 export const MAPPABLE_KEYS = {
   backspace: <BackspaceIcon />,
@@ -32,7 +33,7 @@ function isValidKey(key: string) {
 type Props = {
   onKeyPress: (key: string) => void;
   disabled?: boolean;
-  usedKeys: Record<string, TileProps>;
+  usedKeys: Record<string, GameTile>;
 };
 
 export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {

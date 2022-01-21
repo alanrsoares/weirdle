@@ -1,64 +1,21 @@
 import { toast } from "react-toastify";
 import { createStore, Selector } from "zustand-immer-store";
-import { filter, flatten, indexBy, pipe, prop, uniqBy } from "ramda";
+import {
+  filter,
+  flatten,
+  indexBy,
+  pipe,
+  prop,
+  propEq,
+  reject,
+  uniqBy,
+} from "ramda";
 
 import * as api from "lib/api-client";
-import { makeEmptyGrid, TileProps } from "components/Grid";
 
-const EMPTY_GRID = makeEmptyGrid();
-
-const LOCALSTORAGE_KEY = "@stores/game";
-
-export type GameStatus = "new" | "won" | "lost";
-
-function getNextTile(tile: TileProps, secret: string): TileProps {
-  const key = tile.children.trim().toLowerCase();
-
-  const exists = secret.includes(key);
-
-  if (exists) {
-    const exact = secret[tile.cursor.x] === key;
-
-    return {
-      ...tile,
-      variant: exact ? "placed" : "misplaced",
-    };
-  }
-
-  return {
-    ...tile,
-    variant: "missing",
-  };
-}
-
-function findLastNonEmptyTile(row: TileProps[]) {
-  return row.reduce<TileProps | null>(
-    (acc, tile) => (tile.children ? tile : acc),
-    null
-  );
-}
-
-function getRowWord(row: TileProps[]) {
-  return row
-    .map((x) => x.children.trim())
-    .filter(Boolean)
-    .join("");
-}
-
-function didWin(row: TileProps[]) {
-  return row.every((x) => x.variant === "placed");
-}
-
-export const INITIAL_STATE = {
-  grid: EMPTY_GRID,
-  cursor: { y: 0, x: 0 },
-  secret: "",
-  isLoading: false,
-  status: "new" as GameStatus,
-  error: {
-    message: "",
-  },
-};
+import { didWin, findLastNonEmptyTile, getRowWord } from "./helpers";
+import { INITIAL_STATE, LOCALSTORAGE_KEY, ModalKind } from "./constants";
+import { getNextRow } from ".";
 
 export type GameState = typeof INITIAL_STATE;
 
@@ -81,12 +38,6 @@ export const useGameStore = createStore(INITIAL_STATE, {
         const result = await api.verifyWord(word);
 
         if (!result.valid) {
-          set(({ state }) => {
-            state.error = {
-              message: "Invalid word",
-            };
-          });
-
           toast.error(`Not in word list: ${word}`);
           return;
         }
@@ -104,9 +55,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
           return;
         }
 
-        state.grid[state.cursor.y] = row.map((x) =>
-          getNextTile(x, state.secret)
-        );
+        state.grid[state.cursor.y] = getNextRow(row, state.secret);
 
         const won = didWin(state.grid[state.cursor.y]);
 
@@ -170,6 +119,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
 
         if (!isLastColumn) {
           state.cursor.x++;
+          filter;
         }
       });
     },
@@ -207,6 +157,16 @@ export const useGameStore = createStore(INITIAL_STATE, {
         onClose: this.init.bind(this),
       });
     },
+    openModal(modalKind: ModalKind) {
+      set(({ state }) => {
+        state.activeModal = modalKind;
+      });
+    },
+    closeModal() {
+      set(({ state }) => {
+        state.activeModal = null;
+      });
+    },
   }),
   selectors: {
     /**
@@ -215,7 +175,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
     getUsedKeys: pipe(
       prop("grid"),
       flatten,
-      filter<TileProps>((x) => Boolean(x.children)),
+      reject(propEq("children", "")),
       uniqBy(prop("children")),
       indexBy(prop("children"))
     ),

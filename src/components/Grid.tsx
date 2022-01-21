@@ -1,53 +1,35 @@
 import { FC } from "react";
 import clsx from "clsx";
+import type { GameTile } from "stores/game";
 
-export type TileProps = {
-  variant: "empty" | "placed" | "misplaced" | "missing";
-  children: string;
-  cursor: {
-    y: number;
-    x: number;
-  };
-};
+export type TileProps = GameTile;
 
 type Props = {
   data: TileProps[][];
 };
 
-export function makeEmptyGrid(rows = 6, columns = 5) {
-  const grid: TileProps[][] = [];
-
-  for (let y = 0; y < rows; y++) {
-    const row: TileProps[] = [];
-
-    for (let x = 0; x < columns; x++) {
-      row.push({
-        cursor: { y, x },
-        children: "",
-        variant: "empty",
-      });
-    }
-
-    grid.push(row);
-  }
-
-  return grid;
-}
+export const GridRow = (props: { data: TileProps[] }) => {
+  return (
+    <div className="grid gap-4 grid-cols-5">
+      {props.data.map((tile) => (
+        <Tile
+          key={`${tile.cursor.y}-${tile.cursor.x}`}
+          variant={tile.variant}
+          cursor={tile.cursor}
+        >
+          {tile.children}
+        </Tile>
+      ))}
+    </div>
+  );
+};
 
 export default function Grid(props: Props) {
   return (
-    <div className="grid gap-4 max-w-sm m-auto grid-cols-5 grid-rows-6 place-items-center h-min">
-      {props.data.flatMap((row) =>
-        row.map((tile) => (
-          <Tile
-            key={`${tile.cursor.y}-${tile.cursor.x}`}
-            variant={tile.variant}
-            cursor={tile.cursor}
-          >
-            {tile.children}
-          </Tile>
-        ))
-      )}
+    <div className="grid gap-4 max-w-sm m-auto h-min">
+      {props.data.map((row, i) => (
+        <GridRow key={`row-${i}`} data={row} />
+      ))}
     </div>
   );
 }

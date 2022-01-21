@@ -8,6 +8,7 @@
     "seed": "node src/db/init.js"
   },
   "dependencies": {
+    "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "clsx": "^1.1.1",
     "immer": "^9.0.12",
