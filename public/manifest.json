@@ -3,6 +3,11 @@
   "name": "Wordle",
   "icons": [
     {
+      "src": "/icons/icon-32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
       "src": "/icons/icon-48.png",
       "type": "image/png",
       "sizes": "48x48"
