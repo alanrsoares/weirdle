@@ -13,14 +13,61 @@ import {
 
 import * as api from "lib/api-client";
 
-import { didWin, findLastNonEmptyTile, getRowWord } from "./helpers";
+import {
+  didWin,
+  findLastNonEmptyTile,
+  getRowWord,
+  getNextRow,
+} from "./helpers";
 import { INITIAL_STATE, LOCALSTORAGE_KEY, ModalKind } from "./constants";
-import { getNextRow } from ".";
 
 export type GameState = typeof INITIAL_STATE;
 
 export const useGameStore = createStore(INITIAL_STATE, {
   createActions: (set, get) => ({
+    async init() {
+      // init dark mode
+
+      const persisted = localStorage.getItem(LOCALSTORAGE_KEY);
+
+      const defaultState = persisted
+        ? (JSON.parse(persisted) as GameState)
+        : null;
+
+      if (defaultState) {
+        set((store) => {
+          store.state = defaultState;
+
+          if (
+            defaultState.darkMode &&
+            !document.body.classList.contains("dark")
+          ) {
+            document.body.classList.add("dark");
+          }
+        });
+        return;
+      }
+
+      set((store) => {
+        store.state.isLoading = true;
+      });
+
+      const result = await api.getSecretWord();
+
+      set((store) => {
+        store.state.isLoading = false;
+        store.state.secret = result.secret;
+      });
+    },
+    reset() {
+      set((store) => {
+        store.state = INITIAL_STATE;
+      });
+
+      toast.info("You can play again now!", {
+        onClose: this.init.bind(this),
+      });
+    },
     /**
      * Attempts guessing a wordle
      * @returns
@@ -123,40 +170,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
         }
       });
     },
-    async init() {
-      const persisted = localStorage.getItem("@stores/game");
 
-      const defaultState = persisted
-        ? (JSON.parse(persisted) as GameState)
-        : null;
-
-      if (defaultState?.secret) {
-        set((store) => {
-          store.state = defaultState;
-        });
-        return;
-      }
-
-      set((store) => {
-        store.state.isLoading = true;
-      });
-
-      const result = await api.getSecretWord();
-
-      set((store) => {
-        store.state.isLoading = false;
-        store.state.secret = result.secret;
-      });
-    },
-    reset() {
-      set((store) => {
-        store.state = INITIAL_STATE;
-      });
-
-      toast.info("You can play again now!", {
-        onClose: this.init.bind(this),
-      });
-    },
     openModal(modalKind: ModalKind) {
       set(({ state }) => {
         state.activeModal = modalKind;
@@ -165,6 +179,12 @@ export const useGameStore = createStore(INITIAL_STATE, {
     closeModal() {
       set(({ state }) => {
         state.activeModal = null;
+      });
+    },
+    toggleDarkMode() {
+      set(({ state }) => {
+        state.darkMode = !state.darkMode;
+        document.body.classList.toggle("dark");
       });
     },
   }),

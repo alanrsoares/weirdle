@@ -29,10 +29,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           "relative flex p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer"
         ),
     });
-
-    if (!document.body.classList.contains("dark")) {
-      document.body.classList.add("dark");
-    }
   }, []);
 
   return (

@@ -14,4 +14,5 @@ export const INITIAL_STATE = {
   isLoading: false,
   status: "new" as GameStatus,
   activeModal: null as ModalKind,
+  darkMode: false,
 };
