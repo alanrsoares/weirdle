@@ -1,13 +1,7 @@
-import {
-  Fragment,
-  PropsWithChildren,
-  ReactNode,
-  useRef,
-  useState,
-} from "react";
+import { Fragment, PropsWithChildren, ReactNode, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-type Props = PropsWithChildren<{
+export type Props = PropsWithChildren<{
   open: boolean;
   onClose: (open: boolean) => void;
   title: ReactNode;

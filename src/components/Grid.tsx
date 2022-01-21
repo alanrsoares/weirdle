@@ -39,6 +39,7 @@ export const Tile: FC<TileProps> = (props) => (
     className={clsx(
       "border-2 grid place-items-center select-none uppercase md:text-2xl text-xl md:h-[60px] md:w-[60px] h-[50px] w-[50px]",
       "sm:scale-100 scale-90 origin-center",
+      "dark:text-white",
       {
         "bg-green-500 text-white border-gree-700": props.variant === "placed",
         "bg-yellow-500 text-white border-yellow-700":
