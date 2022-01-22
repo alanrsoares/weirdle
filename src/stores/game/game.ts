@@ -28,24 +28,24 @@ export const useGameStore = createStore(INITIAL_STATE, {
     async init() {
       // init dark mode
 
-      const persisted = localStorage.getItem(LOCALSTORAGE_KEY);
+      const persistedRaw = localStorage.getItem(LOCALSTORAGE_KEY);
 
-      const defaultState = persisted
-        ? (JSON.parse(persisted) as GameState)
+      const persistedState = persistedRaw
+        ? (JSON.parse(persistedRaw) as GameState)
         : null;
 
-      if (defaultState) {
+      if (persistedState) {
         if (
-          defaultState.darkMode &&
+          persistedState.darkMode &&
           !document.body.classList.contains("dark")
         ) {
           document.body.classList.add("dark");
         }
       }
 
-      if (defaultState?.secret) {
+      if (persistedState?.secret) {
         set((store) => {
-          store.state = defaultState;
+          store.state = persistedState;
         });
         return;
       }
