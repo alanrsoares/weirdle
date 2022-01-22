@@ -1,6 +1,6 @@
 {
-  "short_name": "Wordle",
-  "name": "Wordle",
+  "short_name": "Weirdle",
+  "name": "Weirdle",
   "icons": [
     {
       "src": "/icons/icon-32.png",
@@ -47,6 +47,7 @@
   "scope": "/",
   "background_color": "#6aaa64",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#6aaa64",
   "description": "A daily word game"
 }

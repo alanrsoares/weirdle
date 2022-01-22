@@ -40,9 +40,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
         />
-        <meta name="description" content="Wordle - a word puzzle game" />
+        <meta name="description" content="Weirdle - a word puzzle game" />
         <meta name="keywords" content="wordle, puzzle, game" />
-        <title>Wordle</title>
+        <title>Weirdle</title>
         <link rel="manifest" href="/manifest.json" />
         <link
           href="/icons/icon-32.png"

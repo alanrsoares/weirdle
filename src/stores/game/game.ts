@@ -35,15 +35,17 @@ export const useGameStore = createStore(INITIAL_STATE, {
         : null;
 
       if (defaultState) {
+        if (
+          defaultState.darkMode &&
+          !document.body.classList.contains("dark")
+        ) {
+          document.body.classList.add("dark");
+        }
+      }
+
+      if (defaultState?.secret) {
         set((store) => {
           store.state = defaultState;
-
-          if (
-            defaultState.darkMode &&
-            !document.body.classList.contains("dark")
-          ) {
-            document.body.classList.add("dark");
-          }
         });
         return;
       }
@@ -170,7 +172,6 @@ export const useGameStore = createStore(INITIAL_STATE, {
         }
       });
     },
-
     openModal(modalKind: ModalKind) {
       set(({ state }) => {
         state.activeModal = modalKind;

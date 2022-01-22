@@ -1,2 +1,2 @@
-# Wordle
-A Wordle clone in NextJs + Typescript
+# Weirdle
+A Weirdle clone in NextJs + Typescript
