@@ -3,9 +3,11 @@ import { APP_NAME, ModalKind } from "stores/game/constants";
 import { IconButton } from "./Button";
 import { BarChartIcon, CogIcon, HelpIcon } from "./icons";
 
-export default function Header(props: {
+type Props = {
   onIconClick(modalKind: ModalKind): void;
-}) {
+};
+
+export default function Header(props: Props) {
   return (
     <header className="flex justify-between w-full border-b-2 p-2">
       <div className="flex gap-2">
