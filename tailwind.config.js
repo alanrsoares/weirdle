@@ -12,6 +12,9 @@ module.exports = {
       fontFamily: {
         sans: "'Open Sans', sans-serif",
       },
+      colors: {
+        brand: "#6aaa64",
+      },
     },
   },
   plugins: [],
