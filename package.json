@@ -1,4 +1,5 @@
 {
+  "name": "weirdle",
   "private": true,
   "scripts": {
     "dev": "next dev",

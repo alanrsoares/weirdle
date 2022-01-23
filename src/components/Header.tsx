@@ -1,8 +1,7 @@
-import { ModalKind } from "stores/game/constants";
+import { APP_NAME, ModalKind } from "stores/game/constants";
+
 import { IconButton } from "./Button";
 import { BarChartIcon, CogIcon, HelpIcon } from "./icons";
-
-const APP_TITLE = "wordle";
 
 export default function Header(props: {
   onIconClick(modalKind: ModalKind): void;
@@ -15,7 +14,7 @@ export default function Header(props: {
         </IconButton>
       </div>
       <div className="font-bold text-4xl dark:text-white text-gray-600 uppercase pointer-events-none text-center tracking-widest">
-        {APP_TITLE}
+        {APP_NAME}
       </div>
       <div className="flex gap-2">
         <IconButton onClick={props.onIconClick.bind(null, "stats")}>

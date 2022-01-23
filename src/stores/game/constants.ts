@@ -1,6 +1,8 @@
 import type { GameStatus } from "./types";
 import { makeEmptyGrid } from "./helpers";
 
+export const APP_NAME = "weirdle";
+
 const EMPTY_GRID = makeEmptyGrid();
 
 export const LOCALSTORAGE_KEY = "@stores/game";

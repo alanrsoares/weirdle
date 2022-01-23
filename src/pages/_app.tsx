@@ -9,6 +9,9 @@ import "react-toastify/dist/ReactToastify.min.css";
 
 import "../styles/globals.css";
 
+import { capitalize } from "lib/utils";
+import { APP_NAME } from "stores/game/constants";
+
 const contextClass: Record<TypeOptions, string> = {
   success: "ring-2 ring-blue-600 text-blue-600 bg-blue-50",
   error: "ring-2 ring-red-600 text-red-600 bg-red-50",
@@ -40,9 +43,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           name="viewport"
           content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
         />
-        <meta name="description" content="Weirdle - a word puzzle game" />
+        <meta name="description" content={`${APP_NAME} - a word puzzle game`} />
         <meta name="keywords" content="wordle, puzzle, game" />
-        <title>Weirdle</title>
+        <title>{capitalize(APP_NAME)}</title>
         <link rel="manifest" href="/manifest.json" />
         <link
           href="/icons/icon-32.png"
