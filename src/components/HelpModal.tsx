@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { GameTile } from "stores/game";
 import { GridRow } from "./Grid";
 import Modal, { Props as ModalProps } from "./Modal";
 
@@ -22,68 +24,44 @@ export default function HelpModal(props: Props) {
         </header>
         <div className="border-t py-4 grid gap-4">
           <div>Examples</div>
-          <div className="grid gap-2">
-            <GridRow
-              data={[..."weary"].map((key, i) =>
-                key === "w"
-                  ? {
-                      children: key,
-                      cursor: { y: 0, x: i },
-                      variant: "placed",
-                    }
-                  : {
-                      children: key,
-                      cursor: { y: 0, x: i },
-                      variant: "empty",
-                    }
-              )}
-            />
-            <legend>
-              The letter <span>W</span> is in the word and in the correct spot
-            </legend>
-          </div>
-          <div className="grid gap-2">
-            <GridRow
-              data={[..."pills"].map((key, i) =>
-                key === "i"
-                  ? {
-                      children: key,
-                      cursor: { y: 0, x: i },
-                      variant: "misplaced",
-                    }
-                  : {
-                      children: key,
-                      cursor: { y: 0, x: i },
-                      variant: "empty",
-                    }
-              )}
-            />
-            <legend>
-              The letter <span>I</span> is in the word but in the wrong spot
-            </legend>
-          </div>
-          <div className="grid gap-2">
-            <GridRow
-              data={[..."vague"].map((key, i) =>
-                key === "u"
-                  ? {
-                      children: key,
-                      cursor: { y: 0, x: i },
-                      variant: "missing",
-                    }
-                  : {
-                      children: key,
-                      cursor: { y: 0, x: i },
-                      variant: "empty",
-                    }
-              )}
-            />
-            <legend>
-              The letter <span>U</span> is not in the word in any spot
-            </legend>
-          </div>
+          <HelpItem word="weary" letter="w" variant="placed" />
+          <HelpItem word="pills" letter="i" variant="misplaced" />
+          <HelpItem word="vague" letter="u" variant="missing" />
         </div>
       </section>
     </Modal>
+  );
+}
+
+function HelpItem(props: {
+  word: string;
+  letter: string;
+  variant: GameTile["variant"];
+}) {
+  const legendSuffix = useMemo(() => {
+    switch (props.variant) {
+      case "placed":
+        return "in the word and in the correct spot";
+      case "misplaced":
+        return "in the word but in the wrong spot";
+      case "missing":
+        return "not in the word in any spot";
+    }
+  }, [props]);
+
+  return (
+    <div className="grid gap-2">
+      <GridRow
+        data={[...props.word].map((key, i) => ({
+          children: key,
+          cursor: { y: 0, x: i },
+          variant: key === props.letter ? props.variant : "empty",
+        }))}
+      />
+      <legend>
+        The letter <span className="uppercase font-bold">{props.letter}</span>{" "}
+        is {legendSuffix}
+      </legend>
+    </div>
   );
 }
