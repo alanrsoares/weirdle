@@ -9,22 +9,24 @@ type Props = {
 
 export default function Header(props: Props) {
   return (
-    <header className="flex justify-between w-full border-b-2 p-2">
-      <div className="flex gap-2">
-        <IconButton onClick={props.onIconClick.bind(null, "help")}>
-          <HelpIcon />
-        </IconButton>
-      </div>
-      <div className="font-bold text-4xl dark:text-white text-gray-600 uppercase pointer-events-none text-center tracking-widest">
-        {APP_NAME}
-      </div>
-      <div className="flex gap-2">
-        <IconButton onClick={props.onIconClick.bind(null, "stats")}>
-          <BarChartIcon />
-        </IconButton>
-        <IconButton onClick={props.onIconClick.bind(null, "settings")}>
-          <CogIcon />
-        </IconButton>
+    <header className="w-full border-b-2 dark:border-gray-800 md:p-4 p-2 bg-brand">
+      <div className="flex justify-between max-w-lg m-auto">
+        <div className="flex gap-2">
+          <IconButton onClick={props.onIconClick.bind(null, "help")}>
+            <HelpIcon />
+          </IconButton>
+        </div>
+        <div className="font-bold text-4xl dark:text-white text-gray-600 uppercase pointer-events-none text-center tracking-widest">
+          {APP_NAME}
+        </div>
+        <div className="flex gap-2">
+          <IconButton onClick={props.onIconClick.bind(null, "stats")}>
+            <BarChartIcon />
+          </IconButton>
+          <IconButton onClick={props.onIconClick.bind(null, "settings")}>
+            <CogIcon />
+          </IconButton>
+        </div>
       </div>
     </header>
   );
