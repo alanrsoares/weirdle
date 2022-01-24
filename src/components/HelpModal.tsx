@@ -1,4 +1,3 @@
-import { APP_NAME } from "stores/game/constants";
 import { GridRow } from "./Grid";
 import Modal, { Props as ModalProps } from "./Modal";
 
@@ -10,7 +9,7 @@ export default function HelpModal(props: Props) {
       <section className="grid gap-4">
         <header className="grid gap-2">
           <h1 className="text-lg font-medium">
-            Guess the <span className="font-bold">{APP_NAME}</span> in 6 tries.
+            Guess the <span className="font-bold">word</span> in 6 tries.
           </h1>
           <p className="text-sm">
             Each guess must be a valid 5 letter word. Hit the enter button to
@@ -60,7 +59,7 @@ export default function HelpModal(props: Props) {
               )}
             />
             <legend>
-              The letter <span>W</span> is in the word but in the wrong spot
+              The letter <span>I</span> is in the word but in the wrong spot
             </legend>
           </div>
           <div className="grid gap-2">
@@ -80,7 +79,7 @@ export default function HelpModal(props: Props) {
               )}
             />
             <legend>
-              The letter <span>W</span> is not in the word in any spot
+              The letter <span>U</span> is not in the word in any spot
             </legend>
           </div>
         </div>
