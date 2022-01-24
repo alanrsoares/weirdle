@@ -20,7 +20,7 @@ export default function Home() {
       actions.init();
     },
     // eslint-disable-next-line
-    []
+    [actions]
   );
 
   const handleKeyPress = useCallback(

@@ -4427,10 +4427,10 @@ yaml@^1.10.0, yaml@^1.10.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
-zustand-immer-store@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/zustand-immer-store/-/zustand-immer-store-0.6.0.tgz#5abfb24110f76e488009f543ee2c8871a8892f0e"
-  integrity sha512-50GwD6NdYTeaZS5rZDB2PMtiocrQwrQmiogkfy4wiGrq0usEps3CqUV+GHPYwODAoAhX2g1QXztowCWp1PyAgQ==
+zustand-immer-store@0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/zustand-immer-store/-/zustand-immer-store-0.8.2.tgz#90d4427f771f3e740e5a6c622cfdea7dd2ced12e"
+  integrity sha512-qCW+IuRiYZFKSz9F6s6H4cN1+0gzQYlacCgfmjPL9a3SKw4ZQuxPQETP2h23GL94aZdjlzBQ/EliWhSXp9jcYg==
 
 zustand@^3.6.9:
   version "3.6.9"

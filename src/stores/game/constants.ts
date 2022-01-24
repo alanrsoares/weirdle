@@ -5,7 +5,7 @@ export const APP_NAME = "weirdle";
 
 const EMPTY_GRID = makeEmptyGrid();
 
-export const LOCALSTORAGE_KEY = "@stores/game";
+export const STORAGE_KEY = "@stores/game";
 
 export type ModalKind = "help" | "stats" | "settings" | null;
 

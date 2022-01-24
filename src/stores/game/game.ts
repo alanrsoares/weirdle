@@ -19,20 +19,18 @@ import {
   getRowWord,
   getNextRow,
 } from "./helpers";
-import { INITIAL_STATE, LOCALSTORAGE_KEY, ModalKind } from "./constants";
+import { INITIAL_STATE, STORAGE_KEY, ModalKind } from "./constants";
 
 export type GameState = typeof INITIAL_STATE;
 
 export const useGameStore = createStore(INITIAL_STATE, {
   createActions: (set, get) => ({
     async init() {
-      // init dark mode
+      const rawPersistedState = localStorage.getItem(STORAGE_KEY);
 
-      const persistedRaw = localStorage.getItem(LOCALSTORAGE_KEY);
-
-      const persistedState = persistedRaw
-        ? (JSON.parse(persistedRaw) as GameState)
-        : null;
+      const persistedState = rawPersistedState
+        ? JSON.parse(rawPersistedState)
+        : get().state;
 
       if (persistedState) {
         if (
@@ -203,10 +201,10 @@ export const useGameStore = createStore(INITIAL_STATE, {
   },
 });
 
+useGameStore.subscribe(({ state }) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+});
+
 export function useGameStoreSelector<R>(selector: Selector<GameState, R>) {
   return useGameStore((store) => selector(store.state));
 }
-
-useGameStore.subscribe(({ state }) => {
-  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(state));
-});

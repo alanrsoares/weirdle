@@ -13,7 +13,7 @@ export const GridRow = (props: { data: TileProps[] }) => {
     <div className="grid gap-4 grid-cols-5">
       {props.data.map((tile) => (
         <Tile
-          key={`${tile.cursor.y}-${tile.cursor.x}`}
+          key={`${tile.cursor.y}-${tile.cursor.x}-${tile.variant}`}
           variant={tile.variant}
           cursor={tile.cursor}
         >
@@ -28,7 +28,17 @@ export default function Grid(props: Props) {
   return (
     <div className="grid gap-4 max-w-sm m-auto h-min">
       {props.data.map((row, i) => (
-        <GridRow key={`row-${i}`} data={row} />
+        <div key={`row-${i}`} className="grid gap-4 grid-cols-5">
+          {row.map((tile) => (
+            <Tile
+              key={`${tile.cursor.y}-${tile.cursor.x}-${tile.variant}`}
+              variant={tile.variant}
+              cursor={tile.cursor}
+            >
+              {tile.children}
+            </Tile>
+          ))}
+        </div>
       ))}
     </div>
   );
