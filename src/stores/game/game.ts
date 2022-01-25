@@ -3,6 +3,7 @@ import { createStore, Selector } from "zustand-immer-store";
 import {
   filter,
   flatten,
+  groupBy,
   indexBy,
   pipe,
   prop,
@@ -195,8 +196,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
       prop("grid"),
       flatten,
       reject(propEq("children", "")),
-      uniqBy(prop("children")),
-      indexBy(prop("children"))
+      groupBy(prop("children"))
     ),
   },
 });
