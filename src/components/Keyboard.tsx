@@ -4,6 +4,7 @@ import tw from "tailwind-styled-components";
 import type { GameTile } from "stores/game";
 
 import { BackspaceIcon } from "./icons";
+import { propEq } from "ramda";
 
 export const MAPPABLE_KEYS = {
   backspace: <BackspaceIcon />,
@@ -33,7 +34,7 @@ function isValidKey(key: string) {
 type Props = {
   onKeyPress: (key: string) => void;
   disabled?: boolean;
-  usedKeys: Record<string, GameTile>;
+  usedKeys: Record<string, GameTile[]>;
 };
 
 export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
@@ -54,9 +55,13 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
   const getKeyColors = useCallback(
     (key: string) => {
       if (key in usedKeys) {
-        const tile = usedKeys[key];
+        const tiles = usedKeys[key];
+        const tile =
+          tiles.find(propEq("variant", "placed")) ??
+          tiles.find(propEq("variant", "misplaced")) ??
+          tiles.find(propEq("variant", "missing"));
 
-        switch (tile.variant) {
+        switch (tile?.variant) {
           case "missing":
             return { background: "rgb(75 85 99)", color: "white" };
           case "misplaced":
