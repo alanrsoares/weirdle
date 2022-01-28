@@ -47,7 +47,7 @@ export default function Grid(props: Props) {
 export const Tile: FC<TileProps> = (props) => (
   <div
     className={clsx(
-      "h-[50px] w-[50px] select-none place-items-center border-2 text-xl uppercase md:h-[60px] md:w-[60px] md:text-2xl  grid",
+      "grid h-[50px] w-[50px] select-none place-items-center border-2 text-xl uppercase md:h-[60px] md:w-[60px] md:text-2xl",
       "origin-center scale-90 sm:scale-100",
       "dark:text-white",
       {
