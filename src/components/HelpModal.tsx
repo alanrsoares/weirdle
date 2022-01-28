@@ -24,9 +24,9 @@ export default function HelpModal(props: Props) {
         </header>
         <div className="border-t py-4 grid gap-4">
           <div>Examples</div>
-          <HelpItem word="weary" letter="w" variant="placed" />
-          <HelpItem word="pills" letter="i" variant="misplaced" />
-          <HelpItem word="vague" letter="u" variant="missing" />
+          <HelpItem word="weary" letter="w" variant="correct" />
+          <HelpItem word="pills" letter="i" variant="present" />
+          <HelpItem word="vague" letter="u" variant="absent" />
         </div>
       </section>
     </Modal>
@@ -40,11 +40,11 @@ function HelpItem(props: {
 }) {
   const legendSuffix = useMemo(() => {
     switch (props.variant) {
-      case "placed":
+      case "correct":
         return "in the word and in the correct spot";
-      case "misplaced":
+      case "present":
         return "in the word but in the wrong spot";
-      case "missing":
+      case "absent":
         return "not in the word in any spot";
     }
   }, [props]);

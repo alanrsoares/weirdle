@@ -57,16 +57,16 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
       if (key in usedKeys) {
         const tiles = usedKeys[key];
         const tile =
-          tiles.find(propEq("variant", "placed")) ??
-          tiles.find(propEq("variant", "misplaced")) ??
-          tiles.find(propEq("variant", "missing"));
+          tiles.find(propEq("variant", "correct")) ??
+          tiles.find(propEq("variant", "present")) ??
+          tiles.find(propEq("variant", "absent"));
 
         switch (tile?.variant) {
-          case "missing":
+          case "absent":
             return { background: "rgb(75 85 99)", color: "white" };
-          case "misplaced":
+          case "present":
             return { background: "rgb(234 179 8 )", color: "white" };
-          case "placed":
+          case "correct":
             return { background: "rgb(34 197 94)", color: "white" };
         }
       }

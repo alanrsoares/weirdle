@@ -11,13 +11,13 @@ export function getNextTile(tile: GameTile, secret: string): GameTile {
 
     return {
       ...tile,
-      variant: exact ? "placed" : "misplaced",
+      variant: exact ? "correct" : "present",
     };
   }
 
   return {
     ...tile,
-    variant: "missing",
+    variant: "absent",
   };
 }
 
@@ -36,7 +36,7 @@ export function getRowWord(row: GameTile[]) {
 }
 
 export function didWin(row: GameTile[]) {
-  return row.every((x) => x.variant === "placed");
+  return row.every((x) => x.variant === "correct");
 }
 
 export function makeEmptyGrid(rows = 6, columns = 5) {
@@ -83,17 +83,17 @@ export function getNextRow(row: GameTile[], secret: string) {
     const letter = tile.children;
 
     if (!(letter in indexed)) {
-      tile.variant = "missing";
+      tile.variant = "absent";
       return;
     }
 
     const entries = indexed[letter];
 
     if (!entries.length) {
-      tile.variant = "missing";
+      tile.variant = "absent";
       result = result.map((tile) =>
         tile.children === letter && tile.variant === "empty"
-          ? { ...tile, variant: "missing" }
+          ? { ...tile, variant: "absent" }
           : tile
       );
       return;
@@ -101,11 +101,11 @@ export function getNextRow(row: GameTile[], secret: string) {
 
     // exists
     if (entries.includes(i)) {
-      tile.variant = "placed";
+      tile.variant = "correct";
       const nextIndex = without([i], entries);
       indexed[letter] = nextIndex;
     } else {
-      tile.variant = "misplaced";
+      tile.variant = "present";
     }
   });
 

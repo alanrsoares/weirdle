@@ -4,7 +4,7 @@ export type Cursor = {
 };
 
 export type GameTile = {
-  variant: "empty" | "placed" | "misplaced" | "missing";
+  variant: "empty" | "correct" | "present" | "absent";
   children: string;
   cursor: Cursor;
 };

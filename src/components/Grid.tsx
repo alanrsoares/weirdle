@@ -51,10 +51,10 @@ export const Tile: FC<TileProps> = (props) => (
       "sm:scale-100 scale-90 origin-center",
       "dark:text-white",
       {
-        "bg-green-500 text-white border-gree-700": props.variant === "placed",
-        "bg-yellow-500 text-white border-yellow-700":
-          props.variant === "misplaced",
-        "bg-gray-600 text-white": props.variant === "missing",
+        "bg-green-500 text-white border-green-500": props.variant === "correct",
+        "bg-yellow-500 text-white border-yellow-500":
+          props.variant === "present",
+        "bg-gray-500 text-white border-gray-500": props.variant === "absent",
       }
     )}
   >
