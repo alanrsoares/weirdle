@@ -55,6 +55,7 @@ export const Tile: FC<TileProps> = (props) => (
         "bg-yellow-500 text-white border-yellow-500":
           props.variant === "present",
         "bg-gray-500 text-white border-gray-500": props.variant === "absent",
+        "border-gray-300 dark:border-gray-400": props.variant === "empty",
       }
     )}
   >
