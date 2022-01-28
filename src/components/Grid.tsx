@@ -10,7 +10,7 @@ type Props = {
 
 export const GridRow = (props: { data: TileProps[] }) => {
   return (
-    <div className="grid gap-4 grid-cols-5">
+    <div className="grid grid-cols-5 gap-4">
       {props.data.map((tile) => (
         <Tile
           key={`${tile.cursor.y}-${tile.cursor.x}-${tile.variant}`}
@@ -26,9 +26,9 @@ export const GridRow = (props: { data: TileProps[] }) => {
 
 export default function Grid(props: Props) {
   return (
-    <div className="grid gap-4 max-w-sm m-auto h-min">
+    <div className="m-auto grid h-min max-w-sm gap-4">
       {props.data.map((row, i) => (
-        <div key={`row-${i}`} className="grid gap-4 grid-cols-5">
+        <div key={`row-${i}`} className="grid grid-cols-5 gap-4">
           {row.map((tile) => (
             <Tile
               key={`${tile.cursor.y}-${tile.cursor.x}-${tile.variant}`}
@@ -47,14 +47,14 @@ export default function Grid(props: Props) {
 export const Tile: FC<TileProps> = (props) => (
   <div
     className={clsx(
-      "border-2 grid place-items-center select-none uppercase md:text-2xl text-xl md:h-[60px] md:w-[60px] h-[50px] w-[50px]",
-      "sm:scale-100 scale-90 origin-center",
+      "grid h-[50px] w-[50px] select-none place-items-center border-2 text-xl uppercase md:h-[60px] md:w-[60px] md:text-2xl",
+      "origin-center scale-90 sm:scale-100",
       "dark:text-white",
       {
-        "bg-green-500 text-white border-green-500": props.variant === "correct",
-        "bg-yellow-500 text-white border-yellow-500":
+        "border-green-500 bg-green-500 text-white": props.variant === "correct",
+        "border-yellow-500 bg-yellow-500 text-white":
           props.variant === "present",
-        "bg-gray-500 text-white border-gray-500": props.variant === "absent",
+        "border-gray-500 bg-gray-500 text-white": props.variant === "absent",
         "border-gray-300 dark:border-gray-400": props.variant === "empty",
       }
     )}

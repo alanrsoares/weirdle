@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
 import { useGameStore } from "stores/game";
+
 import Modal, { Props as ModalProps } from "./Modal";
 import Toggle from "./Toggle";
 
@@ -10,7 +10,7 @@ export default function SettingsModal(props: Props) {
 
   return (
     <Modal title="Settings" open={props.open} onClose={props.onClose}>
-      <div className="flex justify-between items-center gap-4">
+      <div className="flex items-center justify-between gap-4">
         <label className="font-semibold">Dark mode:</label>
         <Toggle checked={state.darkMode} onChange={actions.toggleDarkMode} />
       </div>

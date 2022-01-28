@@ -9,14 +9,14 @@ type Props = {
 
 export default function Header(props: Props) {
   return (
-    <header className="w-full border-b-2 dark:border-gray-800 p-4 bg-brand">
-      <div className="flex justify-between max-w-lg m-auto">
+    <header className="w-full border-b-2 bg-brand p-4 dark:border-gray-800">
+      <div className="m-auto flex max-w-lg justify-between">
         <div className="flex gap-2">
           <IconButton onClick={props.onIconClick.bind(null, "help")}>
             <HelpIcon />
           </IconButton>
         </div>
-        <div className="font-bold text-4xl text-white uppercase pointer-events-none text-center tracking-widest">
+        <div className="pointer-events-none text-center text-4xl font-bold uppercase tracking-widest text-white">
           {APP_NAME}
         </div>
         <div className="flex gap-2">

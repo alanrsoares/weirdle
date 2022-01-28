@@ -15,13 +15,11 @@ export default function Home() {
 
   const keys = useSelector("getUsedKeys");
 
-  useEffect(
-    () => {
-      actions.init();
-    },
-    // eslint-disable-next-line
-    [actions]
-  );
+  useEffect(() => {
+    actions.init().then(() => {
+      console.log("weirdle: cached state restored");
+    });
+  }, [actions]);
 
   const handleKeyPress = useCallback(
     (key: string) => {
@@ -42,16 +40,16 @@ export default function Home() {
   );
 
   return (
-    <div className="flex flex-col w-full m-auto h-screen dark:bg-gray-700">
+    <div className="m-auto flex h-screen w-full flex-col dark:bg-gray-700">
       <Header onIconClick={actions.openModal} />
-      <main className="flex-1 p-4 flex flex-col justify-between max-w-lg m-auto">
+      <main className="m-auto flex max-w-lg flex-1 flex-col justify-between p-4">
         {process.env.NODE_ENV === "development" && (
-          <div className="text-center border p-2 bg-gray-100 uppercase tracking-widest font-mono">
+          <div className="border bg-gray-100 p-2 text-center font-mono uppercase tracking-widest">
             {state.secret}
           </div>
         )}
         <Grid data={state.grid} />
-        <div className="md:hidden flex-1"></div>
+        <div className="flex-1 md:hidden"></div>
         <Keyboard
           usedKeys={keys}
           disabled={state.isLoading}

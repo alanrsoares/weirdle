@@ -77,10 +77,10 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
   );
 
   return (
-    <div className="grid gap-4 h-min mx-auto select-none">
+    <div className="mx-auto grid h-min select-none gap-4">
       {KEYS.map((row, i) => (
         <div
-          className="flex justify-evenly touch-manipulation md:gap-2 gap-1"
+          className="flex touch-manipulation justify-evenly gap-1 md:gap-2"
           key={`row-${i}`}
         >
           {row.map((key, j) =>

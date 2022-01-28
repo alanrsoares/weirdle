@@ -1,22 +1,24 @@
 import { useEffect } from "react";
+import { toast, TypeOptions } from "react-toastify";
 import Head from "next/head";
 import type { AppProps } from "next/app";
 import clsx from "clsx";
 import { XIcon } from "@heroicons/react/solid";
-import { toast, TypeOptions } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.min.css";
 
 import "../styles/globals.css";
-import { APP_NAME } from "stores/game/constants";
+
+import tw from "lib/tw";
 import { capitalize } from "lib/utils";
+import { APP_NAME } from "stores/game/constants";
 
 const contextClass: Record<TypeOptions, string> = {
-  success: "ring-2 ring-blue-600 text-blue-600 bg-blue-50",
-  error: "ring-2 ring-red-600 text-red-600 bg-red-50",
-  info: "ring-2 ring-gray-600 text-gray-600 bg-gray-50",
-  warning: "ring-2 ring-orange-600 text-orange-600 bg-orange-50",
-  default: "ring-2 ring-indigo-600 text-indigo-600 bg-indigo-50",
+  success: tw`ring-2 ring-blue-600 text-blue-600 bg-blue-50`,
+  error: tw`ring-2 ring-red-600 text-red-600 bg-red-50`,
+  info: tw`ring-2 ring-gray-600 text-gray-600 bg-gray-50`,
+  warning: tw`ring-2 ring-orange-600 text-orange-600 bg-orange-50`,
+  default: tw`ring-2 ring-indigo-600 text-indigo-600 bg-indigo-50`,
 };
 
 function MyApp({ Component, pageProps }: AppProps) {

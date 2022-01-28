@@ -22,7 +22,7 @@ export default function HelpModal(props: Props) {
             close your guess was to the word.
           </p>
         </header>
-        <div className="border-t py-4 grid gap-4">
+        <div className="grid gap-4 border-t py-4">
           <div>Examples</div>
           <HelpItem word="weary" letter="w" variant="correct" />
           <HelpItem word="pills" letter="i" variant="present" />
@@ -59,7 +59,7 @@ function HelpItem(props: {
         }))}
       />
       <legend>
-        The letter <span className="uppercase font-bold">{props.letter}</span>{" "}
+        The letter <span className="font-bold uppercase">{props.letter}</span>{" "}
         is {legendSuffix}
       </legend>
     </div>
