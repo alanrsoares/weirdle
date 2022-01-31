@@ -12,6 +12,7 @@ import "../styles/globals.css";
 import tw from "lib/tw";
 import { capitalize } from "lib/utils";
 import { APP_NAME } from "stores/game/constants";
+import { AnimatePresence } from "framer-motion";
 
 const contextClass: Record<TypeOptions, string> = {
   success: tw`ring-2 ring-blue-600 text-blue-600 bg-blue-50`,
@@ -40,7 +41,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>{capitalize(APP_NAME)}</title>
       </Head>
-      <Component {...pageProps} />
+      <AnimatePresence>
+        <Component {...pageProps} />
+      </AnimatePresence>
     </>
   );
 }

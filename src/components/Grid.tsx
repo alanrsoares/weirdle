@@ -1,8 +1,10 @@
 import { FC } from "react";
 import clsx from "clsx";
+import { motion } from "framer-motion";
+
 import type { GameTile } from "stores/game";
 
-export type TileProps = GameTile;
+export type TileProps = GameTile & { delay?: number };
 
 type Props = {
   data: TileProps[][];
@@ -29,11 +31,12 @@ export default function Grid(props: Props) {
     <div className="m-auto grid h-min max-w-sm gap-4">
       {props.data.map((row, i) => (
         <div key={`row-${i}`} className="grid grid-cols-5 gap-4">
-          {row.map((tile) => (
+          {row.map((tile, j) => (
             <Tile
               key={`${tile.cursor.y}-${tile.cursor.x}-${tile.variant}`}
               variant={tile.variant}
               cursor={tile.cursor}
+              delay={j * 0.1}
             >
               {tile.children}
             </Tile>
@@ -45,7 +48,10 @@ export default function Grid(props: Props) {
 }
 
 export const Tile: FC<TileProps> = (props) => (
-  <div
+  <motion.div
+    initial={props.variant !== "empty" ? { scale: 0.75 } : false}
+    animate={props.variant !== "empty" ? { scale: 1 } : false}
+    transition={{ type: "spring", delay: props.delay }}
     className={clsx(
       "grid h-[50px] w-[50px] select-none place-items-center border-2 text-xl uppercase md:h-[60px] md:w-[60px] md:text-2xl",
       "origin-center scale-90 sm:scale-100",
@@ -59,6 +65,12 @@ export const Tile: FC<TileProps> = (props) => (
       }
     )}
   >
-    {props.children}
-  </div>
+    <motion.span
+      initial={props.variant !== "empty" ? { opacity: 0 } : false}
+      animate={props.variant !== "empty" ? { opacity: 1 } : false}
+      transition={{ type: "spring", delay: (props.delay ?? 0) + 0.1 }}
+    >
+      {props.children}
+    </motion.span>
+  </motion.div>
 );
