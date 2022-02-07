@@ -48,32 +48,46 @@ export default function Grid(props: Props) {
 }
 
 export const Tile: FC<TileProps> = (props) => (
-  <motion.div
-    initial={props.variant !== "empty" ? { scale: 0.75 } : false}
-    animate={props.variant !== "empty" ? { scale: 1 } : false}
-    transition={{ type: "spring", delay: props.delay }}
+  <div
     className={clsx(
-      "grid h-[50px] w-[50px] select-none place-items-center border-2 text-xl uppercase md:h-[60px] md:w-[60px] md:text-2xl",
-      "origin-center scale-90 sm:scale-100",
-      "dark:text-white",
-      {
-        "border-green-500 bg-green-500 text-white": props.variant === "correct",
-        "border-yellow-500 bg-yellow-500 text-white":
-          props.variant === "present",
-        "border-gray-500 bg-gray-500 text-white": props.variant === "absent",
-        "border-4 border-gray-500 dark:border-[3px] dark:border-gray-300":
-          props.variant === "empty" && props.children,
-        "border-gray-300 dark:border-gray-300":
-          props.variant === "empty" && !props.children,
-      }
+      "preserve-3d h-[50px] w-[50px]",
+      "origin-center scale-90 sm:scale-100"
     )}
+    style={{ perspective: 1000 }}
   >
-    <motion.span
-      initial={props.variant !== "empty" ? { opacity: 0 } : false}
-      animate={props.variant !== "empty" ? { opacity: 1 } : false}
-      transition={{ type: "spring", delay: (props.delay ?? 0) + 0.1 }}
+    <motion.div
+      initial={props.variant !== "empty" ? { transform: "rotateX(0)" } : false}
+      animate={
+        props.variant !== "empty" ? { transform: "rotateX(180deg)" } : false
+      }
+      transition={{ type: "spring", delay: props.delay, duration: 2 }}
+      className={clsx(
+        "grid select-none place-items-center border-2 text-xl uppercase md:h-[60px] md:w-[60px] md:text-2xl",
+        "dark:text-white",
+        {
+          "border-green-500 bg-green-500 text-white":
+            props.variant === "correct",
+          "border-yellow-500 bg-yellow-500 text-white":
+            props.variant === "present",
+          "border-gray-500 bg-gray-500 text-white": props.variant === "absent",
+          "border-4 border-gray-500 dark:border-[3px] dark:border-gray-300":
+            props.variant === "empty" && props.children,
+          "border-gray-300 dark:border-gray-300":
+            props.variant === "empty" && !props.children,
+        }
+      )}
     >
-      {props.children}
-    </motion.span>
-  </motion.div>
+      <motion.span
+        initial={
+          props.variant !== "empty"
+            ? { opacity: 0, transform: "rotateX(180deg)" }
+            : false
+        }
+        animate={props.variant !== "empty" ? { opacity: 1 } : false}
+        transition={{ type: "spring", delay: (props.delay ?? 0) + 0.1 }}
+      >
+        {props.children}
+      </motion.span>
+    </motion.div>
+  </div>
 );
