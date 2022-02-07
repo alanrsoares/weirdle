@@ -50,7 +50,7 @@ export default function Grid(props: Props) {
 export const Tile: FC<TileProps> = (props) => (
   <div
     className={clsx(
-      "preserve-3d h-[50px] w-[50px]",
+      "preserve-3d h-[50px] w-[50px] md:h-[60px] md:w-[60px]",
       "origin-center scale-90 sm:scale-100"
     )}
     style={{ perspective: 1000 }}
@@ -62,6 +62,7 @@ export const Tile: FC<TileProps> = (props) => (
       }
       transition={{ type: "spring", delay: props.delay, duration: 2 }}
       className={clsx(
+        "h-[50px] w-[50px]",
         "grid select-none place-items-center border-2 text-xl uppercase md:h-[60px] md:w-[60px] md:text-2xl",
         "dark:text-white",
         {
