@@ -1,5 +1,6 @@
 const { resolve } = require("path");
 const { readFile, writeFile } = require("fs/promises");
+const chalk = require("chalk");
 
 async function main() {
   try {
@@ -21,6 +22,10 @@ async function main() {
     const data = { length: items.length, items };
 
     await writeFile(resolve(__dirname, "db.json"), JSON.stringify(data));
+
+    console.info(
+      chalk.green`\n🎉 database initialized with ${data.length} words 🎉\n`
+    );
   } catch (error) {
     console.log("failed to generate database");
   }
