@@ -38,12 +38,12 @@ export default function StatsModal(props: Props) {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="grid flex-1 place-items-center gap-2 border p-2 px-3 text-center"
+              className="grid flex-1 place-items-center gap-2 rounded-lg bg-slate-200 p-2 px-3 text-center dark:bg-slate-700"
             >
-              <div className="text-sm font-semibold text-gray-600">
+              <div className="text-sm font-semibold text-gray-600 dark:text-white">
                 {stat.label}
               </div>
-              {stat.value}
+              <div className="dark:text-slate-100">{stat.value}</div>
             </div>
           ))}
         </div>
@@ -52,7 +52,7 @@ export default function StatsModal(props: Props) {
             <div key={index} className="flex items-center font-semibold">
               <div className="w-8 p-2 pr-1">{index + 1}</div>
               <div
-                className="font-white gap-2 bg-gray-600 px-2 py-1 text-white"
+                className="font-white gap-2 bg-gray-600  px-2 py-1 text-white dark:bg-slate-50 dark:text-slate-800"
                 style={{ width: `${value ? (value / state.wins) * 100 : 6}%` }}
               >
                 {value}

@@ -32,9 +32,8 @@ const Modal: FC<Props> = (props) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay className="backdrop-blur-xs fixed inset-0 bg-gray-500/50 bg-opacity-75 transition-opacity" />
           </Transition.Child>
-
           {/* This element is to trick the browser into centering the modal contents. */}
           <span
             className="hidden sm:inline-block sm:h-screen sm:align-middle"
@@ -53,16 +52,16 @@ const Modal: FC<Props> = (props) => {
           >
             <div
               className={clsx(
-                "relative inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl",
+                "relative inline-block transform overflow-hidden rounded-2xl text-left align-bottom shadow-xl",
                 "transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
               )}
             >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <div className="bg-white px-4 pt-5 pb-4 dark:bg-slate-800 dark:text-white sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title
                       as="h3"
-                      className="text-lg font-semibold uppercase leading-6 text-gray-900"
+                      className="text-lg font-semibold uppercase leading-6 text-gray-900 dark:text-slate-100"
                     >
                       {props.title}
                     </Dialog.Title>
@@ -74,7 +73,7 @@ const Modal: FC<Props> = (props) => {
               </div>
               <button
                 type="button"
-                className="absolute top-0 right-0 m-1 h-8 w-8 rounded-full bg-gray-300/30 p-1 transition-colors hover:bg-gray-300"
+                className="absolute top-0 right-0 m-1 h-8 w-8 rounded-full bg-gray-300/30 p-1 transition-colors hover:bg-gray-300 md:m-3"
                 onClick={props.onClose.bind(null, false)}
               >
                 <XIcon />
