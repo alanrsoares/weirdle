@@ -71,41 +71,44 @@ export function getNextRow(row: GameTile[], secret: string) {
     }
   }
 
-  let result = [...row];
+  let result: GameTile[] = [...row];
 
   row.forEach((_, i) => {
-    const tile = result[i];
+    let tile = { ...row[i] };
 
     if (tile.variant !== "empty") {
+      result.push(tile);
       return;
     }
 
     const letter = tile.children;
 
     if (!(letter in indexed)) {
-      tile.variant = "absent";
+      result[i] = { ...tile, variant: "absent" };
       return;
     }
 
     const entries = indexed[letter];
 
     if (!entries.length) {
-      tile.variant = "absent";
+      result[i] = { ...tile, variant: "absent" };
+
       result = result.map((tile) =>
         tile.children === letter && tile.variant === "empty"
           ? { ...tile, variant: "absent" }
           : tile
       );
+
       return;
     }
 
     // exists
     if (entries.includes(i)) {
-      tile.variant = "correct";
+      result[i].variant = "correct";
       const nextIndex = without([i], entries);
       indexed[letter] = nextIndex;
     } else {
-      tile.variant = "present";
+      result[i].variant = "present";
     }
   });
 

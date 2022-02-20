@@ -1,16 +1,6 @@
 import { toast } from "react-toastify";
 import { createStore, Selector } from "zustand-immer-store";
-import {
-  filter,
-  flatten,
-  groupBy,
-  indexBy,
-  pipe,
-  prop,
-  propEq,
-  reject,
-  uniqBy,
-} from "ramda";
+import { filter, flatten, groupBy, pipe, prop, propEq, reject } from "ramda";
 
 import * as api from "lib/api-client";
 
@@ -73,57 +63,74 @@ export const useGameStore = createStore(INITIAL_STATE, {
      * Attempts guessing a wordle
      * @returns
      */
-    async guess() {
+    async guess(): Promise<
+      | { status: "win"; guess: string; attempts: number }
+      | { status: "loss"; guess: string; attempts: number }
+      | { status: "playing" }
+    > {
       const { cursor, grid } = get().state;
 
       if (cursor.x !== grid[0].length - 1) {
-        return;
+        return { status: "playing" };
       }
 
-      const word = getRowWord(grid[cursor.y]);
+      const guessWord = getRowWord(grid[cursor.y]);
+
+      if (guessWord.length !== 5) {
+        return {
+          status: "playing",
+        };
+      }
 
       try {
-        const result = await api.verifyWord(word);
+        const result = await api.verifyWord(guessWord);
 
         if (!result.valid) {
-          toast.error(`Not in word list: ${word}`);
-          return;
+          toast.error(`Not in word list: ${guessWord}`);
+          return {
+            status: "playing",
+          };
         }
       } catch (error) {
         console.log("Failed to verify word: %e", error);
       }
 
+      const { state } = get();
+
+      const won = state.secret === guessWord;
+
+      const attempts = state.cursor.y + 1;
+      const isLastRow = state.cursor.y === state.grid.length - 1;
+
       set(({ state }) => {
-        const row = state.grid[state.cursor.y];
-
-        const isLastColumn = state.cursor.x === row.length - 1;
-        const isLastRow = state.cursor.y === state.grid.length - 1;
-
-        if (!isLastColumn) {
-          return;
-        }
-
-        state.grid[state.cursor.y] = getNextRow(row, state.secret);
-
-        const won = didWin(state.grid[state.cursor.y]);
-
-        if (won) {
-          toast.success("Damn son, you good! 🎉", {
-            onClose: this.reset.bind(this),
-          });
-        } else {
-          if (isLastRow) {
-            toast.warn("Not today, my dude =/", {
-              onClose: this.reset.bind(this),
-            });
-          }
-        }
+        state.grid[state.cursor.y] = getNextRow(
+          state.grid[state.cursor.y],
+          state.secret
+        );
 
         if (!isLastRow) {
           state.cursor.y++;
           state.cursor.x = 0;
         }
       });
+
+      if (won) {
+        toast.success("Damn son, you good! 🎉", {
+          onClose: this.reset.bind(this),
+        });
+      } else {
+        if (isLastRow) {
+          toast.warn("Not today, my dude =/", {
+            onClose: this.reset.bind(this),
+          });
+        }
+      }
+
+      return {
+        status: !isLastRow && !won ? "playing" : won ? "win" : "loss",
+        guess: guessWord,
+        attempts,
+      };
     },
     /**
      *  Delete tiles from right to left
@@ -161,9 +168,10 @@ export const useGameStore = createStore(INITIAL_STATE, {
 
         const isLastColumn = cursor.x === row.length - 1;
 
-        const nextTile = { ...tile, children: key };
-
-        state.grid[cursor.y][cursor.x] = nextTile;
+        state.grid[cursor.y][cursor.x] = {
+          ...tile,
+          children: key,
+        };
 
         if (!isLastColumn) {
           state.cursor.x++;

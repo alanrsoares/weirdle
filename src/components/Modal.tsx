@@ -1,14 +1,17 @@
-import { Fragment, PropsWithChildren, ReactNode, useRef } from "react";
+import { FC, Fragment, ReactNode, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import clsx from "clsx";
 
-export type Props = PropsWithChildren<{
+import { XIcon } from "@heroicons/react/solid";
+
+export type Props = {
   open: boolean;
-  onClose: (open: boolean) => void;
   title: ReactNode;
+  onClose(open: boolean): void;
   actionLabel?: string;
-}>;
+};
 
-export default function Modal(props: Props) {
+const Modal: FC<Props> = (props) => {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -48,35 +51,40 @@ export default function Modal(props: Props) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle">
+            <div
+              className={clsx(
+                "relative inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl",
+                "transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
+              )}
+            >
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <div className="mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
                     <Dialog.Title
                       as="h3"
                       className="text-lg font-semibold uppercase leading-6 text-gray-900"
                     >
                       {props.title}
                     </Dialog.Title>
-                    <div className="grid place-items-center pt-4">
+                    <div className="grid w-full place-items-center pt-4">
                       {props.children}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button
-                  type="button"
-                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={props.onClose.bind(null, false)}
-                >
-                  {props.actionLabel ?? "Close"}
-                </button>
-              </div>
+              <button
+                type="button"
+                className="absolute top-0 right-0 m-1 h-8 w-8 rounded-full bg-gray-300/30 p-1 transition-colors hover:bg-gray-300"
+                onClick={props.onClose.bind(null, false)}
+              >
+                <XIcon />
+              </button>
             </div>
           </Transition.Child>
         </div>
       </Dialog>
     </Transition.Root>
   );
-}
+};
+
+export default Modal;

@@ -4,14 +4,11 @@ import { APP_NAME } from "stores/game/constants";
 
 export default function Document() {
   return (
-    <Html>
+    <Html className="antialiased">
       <Head>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta
-          name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
-        />
+
         <meta name="description" content={`${APP_NAME} - a word puzzle game`} />
         <meta name="keywords" content="wordle, puzzle, game" />
         <link rel="manifest" href="/manifest.json" />
@@ -59,34 +56,34 @@ export default function Document() {
             ></path>
           </svg>
         </a>
-        <style>
+        <style jsx>
           {`
-      .github-corner:hover .octo-arm {
-        animation: octocat-wave 560ms ease-in-out;
-      }
-      @keyframes octocat-wave {
-        0%,
-        100% {
-          transform: rotate(0);
-        }
-        20%,
-        60% {
-          transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-          transform: rotate(10deg);
-        }
-      }
-      @media (max-width: 500px) {
-        .github-corner:hover .octo-arm {
-          animation: none;
-        }
-        .github-corner .octo-arm {
-          animation: octocat-wave 560ms ease-in-out;
-        }
-      }
-      `}
+            .github-corner:hover .octo-arm {
+              animation: octocat-wave 560ms ease-in-out;
+            }
+            @keyframes octocat-wave {
+              0%,
+              100% {
+                transform: rotate(0);
+              }
+              20%,
+              60% {
+                transform: rotate(-25deg);
+              }
+              40%,
+              80% {
+                transform: rotate(10deg);
+              }
+            }
+            @media (max-width: 500px) {
+              .github-corner:hover .octo-arm {
+                animation: none;
+              }
+              .github-corner .octo-arm {
+                animation: octocat-wave 560ms ease-in-out;
+              }
+            }
+          `}
         </style>
       </body>
     </Html>

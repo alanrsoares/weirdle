@@ -1,4 +1,5 @@
 import { Switch } from "@headlessui/react";
+import { FC } from "react";
 
 export type Props = {
   checked: boolean;
@@ -6,7 +7,7 @@ export type Props = {
   label?: string;
 };
 
-export default function Toggle(props: Props) {
+const Toggle: FC<Props> = (props) => {
   return (
     <Switch
       checked={props.checked}
@@ -19,7 +20,10 @@ export default function Toggle(props: Props) {
         aria-hidden="true"
         className={`${props.checked ? "translate-x-9" : "translate-x-0"}
         pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-      />
+      >
+        {props.children}
+      </span>
     </Switch>
   );
-}
+};
+export default Toggle;
