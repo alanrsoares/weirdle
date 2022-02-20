@@ -19,8 +19,6 @@ export async function handler(
 
   const secret = items[randomInt(length)];
 
-  console.log({ secret });
-
   req.session.set("secret", secret);
   await req.session.save();
 

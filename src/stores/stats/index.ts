@@ -23,7 +23,6 @@ export const useStatsStore = createStore(INITIAL_STATE, {
       });
     },
     captureLoss() {
-      console.log("lost");
       set(({ state }) => {
         state.losses++;
         state.maxStreak = Math.max(state.maxStreak, state.currentStreak);
