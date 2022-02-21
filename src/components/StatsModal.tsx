@@ -33,7 +33,7 @@ export default function StatsModal(props: Props) {
 
   return (
     <Modal title="Statistics" open={props.open} onClose={props.onClose}>
-      <div className="grid min-h-[20vh] w-full gap-4">
+      <div className="grid min-h-[20vh] w-full gap-8 pb-4">
         <div className="flex w-full gap-2 text-black">
           {stats.map((stat) => (
             <div
@@ -49,7 +49,10 @@ export default function StatsModal(props: Props) {
         </div>
         <div className="grid gap-2">
           {state.distribution.map((value, index) => (
-            <div key={index} className="flex items-center gap-2 font-semibold">
+            <div
+              key={index}
+              className="flex items-center gap-2 font-mono font-semibold"
+            >
               <div className="grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white dark:bg-white/50">
                 {index + 1}
               </div>
