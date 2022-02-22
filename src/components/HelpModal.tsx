@@ -9,24 +9,26 @@ export default function HelpModal(props: Props) {
   return (
     <Modal title="How to play" open={props.open} onClose={props.onClose}>
       <section className="grid gap-4">
-        <header className="grid gap-2">
+        <header className="grid gap-2 md:gap-3">
           <h1 className="text-lg font-medium">
             Guess the <span className="font-bold">word</span> in 6 tries.
           </h1>
-          <p className="text-sm">
+          <p className="text-sm text-slate-800 dark:text-slate-200">
             Each guess must be a valid 5 letter word. Hit the enter button to
             submit.
           </p>
-          <p className="text-sm">
+          <p className="text-sm text-slate-800 dark:text-slate-200">
             After each guess, the color of the tiles will change to show how
             close your guess was to the word.
           </p>
         </header>
         <div className="grid gap-4 border-t py-4">
-          <div>Examples</div>
-          <HelpItem word="weary" letter="w" variant="correct" />
-          <HelpItem word="pills" letter="i" variant="present" />
-          <HelpItem word="vague" letter="u" variant="absent" />
+          <div className="font-medium">Examples</div>
+          <div className="m-auto grid max-w-sm gap-4 text-center">
+            <HelpItem word="weary" letter="w" variant="correct" />
+            <HelpItem word="pills" letter="i" variant="present" />
+            <HelpItem word="vague" letter="u" variant="absent" />
+          </div>
         </div>
       </section>
     </Modal>
@@ -50,7 +52,7 @@ function HelpItem(props: {
   }, [props]);
 
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-4">
       <GridRow
         data={[...props.word].map((key, i) => ({
           children: key,

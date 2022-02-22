@@ -12,7 +12,7 @@
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.5",
     "clsx": "^1.1.1",
-    "framer-motion": "^6.2.6",
+    "framer-motion": "^6.2.7",
     "immer": "^9.0.12",
     "next": "12.0.10",
     "ramda": "^0.28.0",
