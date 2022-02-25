@@ -25,30 +25,30 @@ export default function Home() {
 
   const handleKeyPress = useCallback(
     async (key: string) => {
-      if (isMappableKey(key)) {
-        switch (key) {
-          case "backspace":
-            gameActions.delete();
-            break;
-          case "enter":
-            const result = await gameActions.guess();
-
-            switch (result.status) {
-              case "win":
-                statsActions.captureWin({
-                  attempts: result.attempts,
-                });
-                //
-                break;
-              case "loss":
-                statsActions.captureLoss();
-                break;
-            }
-            break;
-        }
+      if (!isMappableKey(key)) {
+        gameActions.insert(key);
         return;
       }
-      gameActions.insert(key);
+
+      switch (key) {
+        case "backspace":
+          gameActions.delete();
+          break;
+        case "enter":
+          const result = await gameActions.guess();
+
+          switch (result.status) {
+            case "win":
+              statsActions.captureWin({
+                attempts: result.attempts,
+              });
+              break;
+            case "loss":
+              statsActions.captureLoss();
+              break;
+          }
+          break;
+      }
     },
     [gameActions, statsActions]
   );

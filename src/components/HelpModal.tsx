@@ -1,5 +1,7 @@
-import { useMemo } from "react";
+import { always } from "ramda";
 import { GameTile } from "stores/game";
+import { match } from "ts-pattern";
+
 import { GridRow } from "./Grid";
 import Modal, { Props as ModalProps } from "./Modal";
 
@@ -40,17 +42,6 @@ function HelpItem(props: {
   letter: string;
   variant: GameTile["variant"];
 }) {
-  const legendSuffix = useMemo(() => {
-    switch (props.variant) {
-      case "correct":
-        return "in the word and in the correct spot";
-      case "present":
-        return "in the word but in the wrong spot";
-      case "absent":
-        return "not in the word in any spot";
-    }
-  }, [props]);
-
   return (
     <div className="grid gap-4">
       <GridRow
@@ -62,7 +53,12 @@ function HelpItem(props: {
       />
       <legend>
         The letter <span className="font-bold uppercase">{props.letter}</span>{" "}
-        is {legendSuffix}
+        is{" "}
+        {match(props.variant)
+          .with("correct", always("in the word and in the correct spot"))
+          .with("present", always("in the word but in the wrong spot"))
+          .with("absent", always("not in the word in any spot"))
+          .run()}
       </legend>
     </div>
   );

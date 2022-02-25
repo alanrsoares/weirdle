@@ -1,10 +1,11 @@
 import { useCallback, useEffect } from "react";
+import { match } from "ts-pattern";
+import { always, propEq } from "ramda";
 import tw from "tailwind-styled-components";
 
 import type { GameTile } from "stores/game";
 
 import { BackspaceIcon } from "./icons";
-import { propEq } from "ramda";
 
 export const MAPPABLE_KEYS = {
   backspace: <BackspaceIcon />,
@@ -61,14 +62,14 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
           tiles.find(propEq("variant", "present")) ??
           tiles.find(propEq("variant", "absent"));
 
-        switch (tile?.variant) {
-          case "absent":
-            return { background: "rgb(75 85 99)", color: "white" };
-          case "present":
-            return { background: "rgb(234 179 8 )", color: "white" };
-          case "correct":
-            return { background: "rgb(34 197 94)", color: "white" };
-        }
+        return {
+          color: "white",
+          background: match(tile?.variant)
+            .with("correct", always("rgb(34 197 94)"))
+            .with("present", always("rgb(234 179 8)"))
+            .with("absent", always("rgb(34 197 94)"))
+            .run(),
+        };
       }
 
       return {};
