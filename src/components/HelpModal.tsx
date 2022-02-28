@@ -58,7 +58,7 @@ function HelpItem(props: {
           .with("correct", always("in the word and in the correct spot"))
           .with("present", always("in the word but in the wrong spot"))
           .with("absent", always("not in the word in any spot"))
-          .run()}
+          .otherwise(always(""))}
       </legend>
     </div>
   );

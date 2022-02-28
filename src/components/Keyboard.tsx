@@ -63,12 +63,12 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
           tiles.find(propEq("variant", "absent"));
 
         return {
-          color: "white",
-          background: match(tile?.variant)
+          color: tile?.variant ? "white" : "black",
+          background: match(tile?.variant ?? "empty")
+            .with("absent", always("rgb(75 85 99)"))
             .with("correct", always("rgb(34 197 94)"))
             .with("present", always("rgb(234 179 8)"))
-            .with("absent", always("rgb(34 197 94)"))
-            .run(),
+            .otherwise(always("")),
         };
       }
 
