@@ -49,5 +49,5 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "version": "0.10.6"
+  "version": "0.10.7"
 }
