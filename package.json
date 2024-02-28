@@ -49,5 +49,6 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "version": "0.10.7"
+  "version": "0.10.7",
+  "license": "LicenseRef-LICENSE"
 }
