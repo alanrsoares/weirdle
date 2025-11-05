@@ -90,7 +90,7 @@ const Tile: FC<TileProps> = ({
       <motion.div
         {...getAnimationProps(variant, delay)}
         className={clsx(
-          "grid select-none place-items-center border-2 text-xl uppercase md:text-2xl",
+          "grid place-items-center border-2 text-xl uppercase select-none md:text-2xl",
           "dark:text-white",
           getVariantStyles(variant, hasChildren),
         )}

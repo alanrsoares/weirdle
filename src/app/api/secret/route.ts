@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { randomInt } from "crypto";
-import data from "~/db/db.json";
 import { getIronSession } from "iron-session";
+
+import data from "~/db/db.json";
 import { sessionOptions, type SessionState } from "~/lib/session";
 
 export type SecretApiResponse = {

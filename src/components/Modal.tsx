@@ -1,9 +1,9 @@
 import {
-  type FC,
   Fragment,
+  useRef,
+  type FC,
   type PropsWithChildren,
   type ReactNode,
-  useRef,
 } from "react";
 
 import {
@@ -62,12 +62,12 @@ const Modal: FC<Props> = (props) => {
                   "sm:my-8 sm:w-full sm:max-w-lg sm:align-middle",
                 )}
               >
-                <div className="px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mt-3 w-full text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div className="mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <DialogTitle
                         as="h3"
-                        className="text-lg font-semibold uppercase leading-6 text-gray-900 dark:text-slate-100"
+                        className="text-lg leading-6 font-semibold text-gray-900 uppercase dark:text-slate-100"
                       >
                         {props.title}
                       </DialogTitle>
@@ -80,7 +80,7 @@ const Modal: FC<Props> = (props) => {
                 <button
                   type="button"
                   ref={cancelButtonRef}
-                  className="absolute right-0 top-0 m-1 h-8 w-8 rounded-full bg-gray-300/30 p-1 transition-colors hover:bg-gray-300 md:m-3"
+                  className="absolute top-0 right-0 m-1 h-8 w-8 rounded-full bg-gray-300/30 p-1 transition-colors hover:bg-gray-300 md:m-3"
                   onClick={() => props.onClose(false)}
                 >
                   <XMarkIcon className="h-full w-full" />

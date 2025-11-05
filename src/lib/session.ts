@@ -12,13 +12,13 @@ const getPassword = (): string => {
   if (!password) {
     throw new Error(
       "SECRET_COOKIE_PASSWORD environment variable is required. " +
-      "Please set it to a string of at least 32 characters."
+        "Please set it to a string of at least 32 characters.",
     );
   }
 
   if (password.length < 32) {
     throw new Error(
-      "SECRET_COOKIE_PASSWORD must be at least 32 characters long for security."
+      "SECRET_COOKIE_PASSWORD must be at least 32 characters long for security.",
     );
   }
 

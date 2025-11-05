@@ -60,7 +60,7 @@ export default function Home() {
       <Header onIconClick={gameActions.openModal} />
       <main className="m-auto flex max-w-lg flex-1 flex-col justify-between p-4">
         {process.env.NODE_ENV === "development" && (
-          <div className="border bg-gray-100 p-2 text-center font-mono uppercase tracking-widest">
+          <div className="border bg-gray-100 p-2 text-center font-mono tracking-widest uppercase">
             {gameState.secret}
           </div>
         )}

@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
 
-import * as api from "~/lib/api-client";
 import { filter, flatten, groupBy, pipe, prop, propEq, reject } from "ramda";
 import { createStore, type Selector } from "zustand-immer-store";
 
-import { INITIAL_STATE, type ModalKind, STORAGE_KEY } from "./constants";
+import * as api from "~/lib/api-client";
+import { INITIAL_STATE, STORAGE_KEY, type ModalKind } from "./constants";
 import {
   didWin,
   findLastNonEmptyTile,

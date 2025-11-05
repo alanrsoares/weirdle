@@ -13,7 +13,7 @@ const Toggle: FC<Props> = (props) => {
     <Switch
       checked={props.checked}
       onChange={props.onChange}
-      className={`${props.checked ? "bg-teal-900" : "bg-teal-700"} relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+      className={`${props.checked ? "bg-teal-900" : "bg-teal-700"} focus-visible:ring-opacity-75 relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden focus-visible:ring-2 focus-visible:ring-white`}
     >
       <span className="sr-only">{props.label}</span>
       <span

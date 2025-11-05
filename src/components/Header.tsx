@@ -15,7 +15,7 @@ export default function Header(props: Props) {
             <HelpIcon />
           </IconButton>
         </div>
-        <div className="pointer-events-none text-center text-4xl font-bold uppercase tracking-widest text-white">
+        <div className="pointer-events-none text-center text-4xl font-bold tracking-widest text-white uppercase">
           {APP_NAME}
         </div>
         <div className="flex gap-2">

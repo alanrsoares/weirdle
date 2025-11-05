@@ -46,7 +46,7 @@ export default function RootLayout({
             height="80"
             viewBox="0 0 250 250"
             aria-hidden="true"
-            className="invisible absolute right-0 top-0 fill-white text-[#151513] md:visible"
+            className="invisible absolute top-0 right-0 fill-white text-[#151513] md:visible"
           >
             <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
             <path
