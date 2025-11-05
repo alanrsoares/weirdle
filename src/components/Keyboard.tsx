@@ -109,6 +109,6 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
 export const KeyButton = tw.button`
   bg-gray-300 hover:bg-gray-400 active:opacity-60 md:p-3 
    p-2 rounded-md md:text-xl sm:text-sm text-xs font-bold transition-all 
-   md:min-w-[2.5rem]
+   md:min-w-10
    min-w-[1.85rem]
 `;
