@@ -1,10 +1,12 @@
+import type { FC } from "react";
+
 import { useGameStore } from "~/stores/game";
 import Modal, { type Props as ModalProps } from "./Modal";
 import Toggle from "./Toggle";
 
 export type Props = Pick<ModalProps, "open" | "onClose">;
 
-export default function SettingsModal(props: Props) {
+const SettingsModal: FC<Props> = (props) => {
   const { actions, state } = useGameStore();
 
   return (
@@ -15,4 +17,6 @@ export default function SettingsModal(props: Props) {
       </div>
     </Modal>
   );
-}
+};
+
+export default SettingsModal;

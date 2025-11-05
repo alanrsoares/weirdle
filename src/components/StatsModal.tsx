@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { useMemo, type FC } from "react";
 
 import { useStatsStore } from "~/stores/stats";
 import Modal, { type Props as ModalProps } from "./Modal";
 
 export type Props = Pick<ModalProps, "open" | "onClose">;
 
-export default function StatsModal(props: Props) {
+const StatsModal: FC<Props> = (props) => {
   const { state } = useStatsStore();
 
   const totalPlayed = state.wins + state.losses;
@@ -69,4 +69,6 @@ export default function StatsModal(props: Props) {
       </div>
     </Modal>
   );
-}
+};
+
+export default StatsModal;
