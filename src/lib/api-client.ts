@@ -1,5 +1,5 @@
-import type { SecretApiResponse } from "app/api/secret/route";
-import type { VerifyApiResponse } from "app/api/verify/[word]/route";
+import type { SecretApiResponse } from "~/app/api/secret/route";
+import type { VerifyApiResponse } from "~/app/api/verify/[word]/route";
 
 export async function getSecretWord() {
   return await fetch("/api/secret").then(
