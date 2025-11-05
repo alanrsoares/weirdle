@@ -1,16 +1,16 @@
 import { toast } from "react-toastify";
-import { createStore, Selector } from "zustand-immer-store";
+
+import * as api from "~/lib/api-client";
 import { filter, flatten, groupBy, pipe, prop, propEq, reject } from "ramda";
+import { createStore, type Selector } from "zustand-immer-store";
 
-import * as api from "lib/api-client";
-
+import { INITIAL_STATE, type ModalKind, STORAGE_KEY } from "./constants";
 import {
   didWin,
   findLastNonEmptyTile,
-  getRowWord,
   getNextRow,
+  getRowWord,
 } from "./helpers";
-import { INITIAL_STATE, STORAGE_KEY, ModalKind } from "./constants";
 
 export type GameState = typeof INITIAL_STATE;
 
@@ -105,7 +105,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
       set(({ state }) => {
         state.grid[state.cursor.y] = getNextRow(
           state.grid[state.cursor.y],
-          state.secret
+          state.secret,
         );
 
         if (!isLastRow) {
@@ -138,7 +138,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
     delete() {
       set(({ state }) => {
         const lastNonEmptyTile = findLastNonEmptyTile(
-          state.grid[state.cursor.y]
+          state.grid[state.cursor.y],
         );
 
         if (!lastNonEmptyTile) {
@@ -204,7 +204,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
       prop("grid"),
       flatten,
       reject(propEq("children", "")),
-      groupBy(prop("children"))
+      groupBy(prop("children")),
     ),
   },
 });
@@ -214,5 +214,5 @@ useGameStore.subscribe(({ state }) => {
 });
 
 export function useGameStoreSelector<R>(selector: Selector<GameState, R>) {
-  return useGameStore((store) => selector(store.state));
+  return useGameStore((store: { state: GameState }) => selector(store.state));
 }

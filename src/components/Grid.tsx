@@ -1,4 +1,4 @@
-import Tile, { TileProps } from "./Tile";
+import Tile, { type TileProps } from "./Tile";
 
 type Props = {
   data: TileProps[][];

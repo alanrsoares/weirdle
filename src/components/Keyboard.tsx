@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from "react";
-import { match } from "ts-pattern";
+
 import { always, propEq } from "ramda";
 import tw from "tailwind-styled-components";
+import { match } from "ts-pattern";
 
-import type { GameTile } from "stores/game";
-
+import type { GameTile } from "~/stores/game";
 import { BackspaceIcon } from "./icons";
 
 export const MAPPABLE_KEYS = {
@@ -25,7 +25,7 @@ const KEYS = [
 ];
 
 export const VALID_KEYS = KEYS.flatMap((row) =>
-  row.map((key) => key.toLowerCase())
+  row.map((key) => key.toLowerCase()),
 ).filter(Boolean);
 
 function isValidKey(key: string) {
@@ -74,7 +74,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
 
       return {};
     },
-    [usedKeys]
+    [usedKeys],
   );
 
   return (
@@ -98,7 +98,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
               >
                 {isMappableKey(key) ? MAPPABLE_KEYS[key] : key}
               </KeyButton>
-            )
+            ),
           )}
         </div>
       ))}

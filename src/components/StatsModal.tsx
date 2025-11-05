@@ -1,6 +1,7 @@
 import { useMemo } from "react";
-import { useStatsStore } from "stores/stats";
-import Modal, { Props as ModalProps } from "./Modal";
+
+import { useStatsStore } from "~/stores/stats";
+import Modal, { type Props as ModalProps } from "./Modal";
 
 export type Props = Pick<ModalProps, "open" | "onClose">;
 
@@ -28,7 +29,7 @@ export default function StatsModal(props: Props) {
         value: state.maxStreak,
       },
     ],
-    [state.currentStreak, state.maxStreak, state.wins, totalPlayed]
+    [state.currentStreak, state.maxStreak, state.wins, totalPlayed],
   );
 
   return (

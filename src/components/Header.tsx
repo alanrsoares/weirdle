@@ -1,5 +1,4 @@
-import { APP_NAME, ModalKind } from "stores/game/constants";
-
+import { APP_NAME, type ModalKind } from "~/stores/game/constants";
 import { IconButton } from "./Button";
 import { BarChartIcon, CogIcon, HelpIcon } from "./icons";
 

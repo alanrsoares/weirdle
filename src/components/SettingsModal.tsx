@@ -1,6 +1,5 @@
-import { useGameStore } from "stores/game";
-
-import Modal, { Props as ModalProps } from "./Modal";
+import { useGameStore } from "~/stores/game";
+import Modal, { type Props as ModalProps } from "./Modal";
 import Toggle from "./Toggle";
 
 export type Props = Pick<ModalProps, "open" | "onClose">;

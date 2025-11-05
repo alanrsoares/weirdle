@@ -1,5 +1,5 @@
-import type { GameStatus } from "./types";
 import { makeEmptyGrid } from "./helpers";
+import type { GameStatus } from "./types";
 
 export const APP_NAME = "weirdle";
 

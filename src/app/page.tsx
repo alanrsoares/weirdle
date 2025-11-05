@@ -1,13 +1,15 @@
+"use client";
+
 import { useCallback, useEffect } from "react";
 
-import { useGameStore } from "stores/game";
-import Header from "components/Header";
-import Grid from "components/Grid";
-import Keyboard, { isMappableKey } from "components/Keyboard";
-import HelpModal from "components/HelpModal";
-import StatsModal from "components/StatsModal";
-import SettingsModal from "components/SettingsModal";
-import { useStatsStore } from "stores/stats";
+import Grid from "~/components/Grid";
+import Header from "~/components/Header";
+import HelpModal from "~/components/HelpModal";
+import Keyboard, { isMappableKey } from "~/components/Keyboard";
+import SettingsModal from "~/components/SettingsModal";
+import StatsModal from "~/components/StatsModal";
+import { useGameStore } from "~/stores/game";
+import { useStatsStore } from "~/stores/stats";
 
 const { useSelector } = useGameStore;
 
@@ -50,7 +52,7 @@ export default function Home() {
           break;
       }
     },
-    [gameActions, statsActions]
+    [gameActions, statsActions],
   );
 
   return (

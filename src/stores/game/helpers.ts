@@ -1,5 +1,6 @@
 import { without } from "ramda";
-import { GameTile } from "./types";
+
+import type { GameTile } from "./types";
 
 export function getNextTile(tile: GameTile, secret: string): GameTile {
   const key = tile.children.trim().toLowerCase();
@@ -24,7 +25,7 @@ export function getNextTile(tile: GameTile, secret: string): GameTile {
 export function findLastNonEmptyTile(row: GameTile[]) {
   return row.reduce<GameTile | null>(
     (acc, tile) => (tile.children ? tile : acc),
-    null
+    null,
   );
 }
 
@@ -96,7 +97,7 @@ export function getNextRow(row: GameTile[], secret: string) {
       result = result.map((tile) =>
         tile.children === letter && tile.variant === "empty"
           ? { ...tile, variant: "absent" }
-          : tile
+          : tile,
       );
 
       return;

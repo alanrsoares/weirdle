@@ -1,9 +1,9 @@
 import { always } from "ramda";
-import { GameTile } from "stores/game";
 import { match } from "ts-pattern";
 
+import type { GameTile } from "~/stores/game";
 import { GridRow } from "./Grid";
-import Modal, { Props as ModalProps } from "./Modal";
+import Modal, { type Props as ModalProps } from "./Modal";
 
 export type Props = Pick<ModalProps, "open" | "onClose">;
 

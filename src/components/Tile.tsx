@@ -1,56 +1,107 @@
-import { FC } from "react";
+import type { FC } from "react";
+
 import clsx from "clsx";
 import { motion } from "framer-motion";
 
-import type { GameTile } from "stores/game";
+import type { GameTile } from "~/stores/game";
 
-export type TileProps = GameTile & { delay?: number; size?: number };
+export type TileProps = GameTile & {
+  delay?: number;
+  size?: number;
+};
 
-const Tile: FC<TileProps> = (props) => (
-  <div
-    className={clsx(
-      "preserve-3d",
-      "origin-center scale-90 sm:scale-100 lg:scale-110"
-    )}
-    style={{ perspective: 500, height: props.size, width: props.size }}
-  >
-    <motion.div
-      initial={props.variant !== "empty" ? { transform: "rotateX(0)" } : false}
-      animate={
-        props.variant !== "empty" ? { transform: "rotateX(180deg)" } : false
+const DEFAULT_SIZE = 50;
+const PERSPECTIVE = 500;
+const ANIMATION_DURATION = 2;
+const LETTER_DELAY_OFFSET = 0.5;
+const FLIP_ROTATION = "rotateX(180deg)";
+
+const getVariantStyles = (
+  variant: GameTile["variant"],
+  hasChildren: boolean,
+): string => {
+  switch (variant) {
+    case "correct":
+      return "border-green-500 bg-green-500 text-white";
+    case "present":
+      return "border-yellow-500 bg-yellow-500 text-white";
+    case "absent":
+      return "border-gray-500 bg-gray-500 text-white";
+    case "empty":
+      if (hasChildren) {
+        return "border-gray-500 dark:border-gray-300 md:border-[2.5px]";
       }
-      transition={{ type: "spring", delay: props.delay, duration: 2 }}
-      className={clsx(
-        "grid select-none place-items-center border-2 text-xl uppercase md:text-2xl",
-        "dark:text-white",
-        {
-          "border-green-500 bg-green-500 text-white":
-            props.variant === "correct",
-          "border-yellow-500 bg-yellow-500 text-white":
-            props.variant === "present",
-          "border-gray-500 bg-gray-500 text-white": props.variant === "absent",
-          "border-gray-500 dark:border-gray-300 md:border-[2.5px]":
-            props.variant === "empty" && props.children,
-          "border-gray-400": props.variant === "empty" && !props.children,
-        }
-      )}
-      style={{ height: props.size, width: props.size }}
-    >
-      <motion.span
-        initial={
-          props.variant !== "empty"
-            ? { opacity: 0, transform: "rotateX(180deg)" }
-            : false
-        }
-        animate={props.variant !== "empty" ? { opacity: 1 } : false}
-        transition={{ type: "spring", delay: (props.delay ?? 0) + 0.5 }}
-      >
-        {props.children}
-      </motion.span>
-    </motion.div>
-  </div>
-);
+      return "border-gray-400";
+    default:
+      return "";
+  }
+};
 
-Tile.defaultProps = { size: 50 };
+const getAnimationProps = (variant: GameTile["variant"], delay = 0) => {
+  const shouldAnimate = variant !== "empty";
+  return {
+    initial: shouldAnimate ? { transform: "rotateX(0)" } : false,
+    animate: shouldAnimate ? { transform: FLIP_ROTATION } : false,
+    transition: {
+      type: "spring" as const,
+      delay,
+      duration: ANIMATION_DURATION,
+    },
+  };
+};
+
+const getLetterAnimationProps = (variant: GameTile["variant"], delay = 0) => {
+  const shouldAnimate = variant !== "empty";
+  return {
+    initial: shouldAnimate ? { opacity: 0, transform: FLIP_ROTATION } : false,
+    animate: shouldAnimate ? { opacity: 1 } : false,
+    transition: {
+      type: "spring" as const,
+      delay: delay + LETTER_DELAY_OFFSET,
+    },
+  };
+};
+
+const Tile: FC<TileProps> = ({
+  variant,
+  children,
+  delay = 0,
+  size = DEFAULT_SIZE,
+}) => {
+  const hasChildren = Boolean(children);
+  const containerStyle = {
+    perspective: PERSPECTIVE,
+    height: size,
+    width: size,
+  };
+  const tileStyle = {
+    height: size,
+    width: size,
+  };
+
+  return (
+    <div
+      className={clsx(
+        "preserve-3d",
+        "origin-center scale-90 sm:scale-100 lg:scale-110",
+      )}
+      style={containerStyle}
+    >
+      <motion.div
+        {...getAnimationProps(variant, delay)}
+        className={clsx(
+          "grid select-none place-items-center border-2 text-xl uppercase md:text-2xl",
+          "dark:text-white",
+          getVariantStyles(variant, hasChildren),
+        )}
+        style={tileStyle}
+      >
+        <motion.span {...getLetterAnimationProps(variant, delay)}>
+          {children}
+        </motion.span>
+      </motion.div>
+    </div>
+  );
+};
 
 export default Tile;

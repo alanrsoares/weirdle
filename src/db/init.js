@@ -24,7 +24,7 @@ async function main() {
     await writeFile(resolve(__dirname, "db.json"), JSON.stringify(data));
 
     console.info(
-      chalk.green`\n🎉 database initialized with ${data.length} words 🎉\n`
+      chalk.green`\n🎉 database initialized with ${data.length} words 🎉\n`,
     );
   } catch (error) {
     console.log("failed to generate database");
