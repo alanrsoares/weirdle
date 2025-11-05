@@ -1,16 +1,16 @@
 import { toast } from "react-toastify";
 
-import { filter, flatten, groupBy, pipe, prop, propEq, reject } from "ramda";
+import { filter, flatten, groupBy, pipe, prop, reject } from "ramda";
 import { createStore, type Selector } from "zustand-immer-store";
 
 import * as api from "~/lib/api-client";
 import { INITIAL_STATE, STORAGE_KEY, type ModalKind } from "./constants";
 import {
-  didWin,
   findLastNonEmptyTile,
   getNextRow,
   getRowWord,
 } from "./helpers";
+import type { GameTile } from "./types";
 
 export type GameState = typeof INITIAL_STATE;
 
@@ -203,7 +203,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
     getUsedKeys: pipe(
       prop("grid"),
       flatten,
-      reject(propEq("children", "")),
+      reject((tile: GameTile) => tile.children === ""),
       groupBy(prop("children")),
     ),
   },

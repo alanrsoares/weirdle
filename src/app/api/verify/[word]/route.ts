@@ -8,7 +8,7 @@ export type VerifyApiResponse = {
 };
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ word: string }> },
 ) {
   const { word } = await params;

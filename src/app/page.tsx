@@ -8,14 +8,14 @@ import HelpModal from "~/components/HelpModal";
 import Keyboard, { isMappableKey } from "~/components/Keyboard";
 import SettingsModal from "~/components/SettingsModal";
 import StatsModal from "~/components/StatsModal";
-import { useGameStore } from "~/stores/game";
+import { useGameStore, type GameTile } from "~/stores/game";
 import { useStatsStore } from "~/stores/stats";
 
 const { useSelector } = useGameStore;
 
 export default function Home() {
   const { state: gameState, actions: gameActions } = useGameStore();
-  const { state: stats, actions: statsActions } = useStatsStore();
+  const { actions: statsActions } = useStatsStore();
 
   const keys = useSelector("getUsedKeys");
 
@@ -67,7 +67,7 @@ export default function Home() {
         <Grid data={gameState.grid} />
         <div className="flex-1 md:hidden"></div>
         <Keyboard
-          usedKeys={keys}
+          usedKeys={keys as Record<string, GameTile[]>}
           disabled={gameState.isLoading}
           onKeyPress={handleKeyPress}
         />

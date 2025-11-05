@@ -1,6 +1,6 @@
 import { useCallback, useEffect, type FC } from "react";
 
-import { always, propEq } from "ramda";
+import { always } from "ramda";
 import tw from "styled-cva";
 import { match } from "ts-pattern";
 
@@ -32,6 +32,10 @@ function isValidKey(key: string) {
   return VALID_KEYS.includes(key);
 }
 
+function isVariant(variant: GameTile["variant"]) {
+  return (tile: GameTile) => tile.variant === variant;
+}
+
 type Props = {
   onKeyPress: (key: string) => void;
   disabled?: boolean;
@@ -58,9 +62,9 @@ const Keyboard: FC<Props> = ({ onKeyPress, disabled, usedKeys }) => {
       if (key in usedKeys) {
         const tiles = usedKeys[key];
         const tile =
-          tiles.find(propEq("variant", "correct")) ??
-          tiles.find(propEq("variant", "present")) ??
-          tiles.find(propEq("variant", "absent"));
+          tiles.find(isVariant("correct")) ??
+          tiles.find(isVariant("present")) ??
+          tiles.find(isVariant("absent"));
 
         return {
           color: tile?.variant ? "white" : "black",

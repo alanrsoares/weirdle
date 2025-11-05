@@ -23,6 +23,7 @@
         "lucide-react": "^0.552.0",
         "next": "^16.0.0",
         "next-themes": "^0.4.6",
+        "rambda": "^10.3.3",
         "ramda": "^0.32.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
@@ -30,10 +31,10 @@
         "sonner": "^2.0.7",
         "styled-cva": "^0.4.0",
         "tailwind-merge": "^3.3.1",
-        "ts-pattern": "^5.4.1",
+        "ts-pattern": "^5.9.0",
         "typewriter-effect": "^2.21.0",
-        "zustand": "^4.0.0",
-        "zustand-immer-store": "^0.8.2",
+        "zustand": "^4.5.7",
+        "zustand-immer-store": "^0.9.6",
       },
       "devDependencies": {
         "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
@@ -1283,6 +1284,8 @@
 
     "raf": ["raf@3.4.1", "", { "dependencies": { "performance-now": "^2.1.0" } }, "sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA=="],
 
+    "rambda": ["rambda@10.3.3", "", {}, "sha512-/y6oHX2zCnP2muhtq78QBnSRirm7xPKmHFCTKX5dlQ1txYlieGn75K7oPlUcAgynD1nHRshS3lFQqsNjEPBzIw=="],
+
     "ramda": ["ramda@0.32.0", "", {}, "sha512-GQWAHhxhxWBWA8oIBr1XahFVjQ9Fic6MK9ikijfd4TZHfE2+urfk+irVlR5VOn48uwMgM+loRRBJd6Yjsbc0zQ=="],
 
     "randombytes": ["randombytes@2.1.0", "", { "dependencies": { "safe-buffer": "^5.1.0" } }, "sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ=="],
@@ -1577,7 +1580,7 @@
 
     "zustand": ["zustand@4.5.7", "", { "dependencies": { "use-sync-external-store": "^1.2.2" }, "peerDependencies": { "@types/react": ">=16.8", "immer": ">=9.0.6", "react": ">=16.8" }, "optionalPeers": ["@types/react", "immer", "react"] }, "sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw=="],
 
-    "zustand-immer-store": ["zustand-immer-store@0.8.2", "", {}, "sha512-qCW+IuRiYZFKSz9F6s6H4cN1+0gzQYlacCgfmjPL9a3SKw4ZQuxPQETP2h23GL94aZdjlzBQ/EliWhSXp9jcYg=="],
+    "zustand-immer-store": ["zustand-immer-store@0.9.6", "", { "peerDependencies": { "immer": "^9.0.14", "zustand": ">=3.6.5" } }, "sha512-J79ncCVftqu72mbp3uIA2QtNonHNaEGjx1527VUGq9nvIKUOELXj0ZeI1fZumty+qZ90i5nSMp0rD1n0JNvuVw=="],
 
     "@babel/core/debug": ["debug@4.4.3", "", { "dependencies": { "ms": "^2.1.3" } }, "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA=="],
 
