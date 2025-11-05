@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
-import clsx from "clsx";
 import { motion } from "framer-motion";
+import tw from "styled-cva";
 
 import type { GameTile } from "~/stores/game";
 
@@ -16,26 +16,32 @@ const ANIMATION_DURATION = 2;
 const LETTER_DELAY_OFFSET = 0.5;
 const FLIP_ROTATION = "rotateX(180deg)";
 
-const getVariantStyles = (
-  variant: GameTile["variant"],
-  hasChildren: boolean,
-): string => {
-  switch (variant) {
-    case "correct":
-      return "border-green-500 bg-green-500 text-white";
-    case "present":
-      return "border-yellow-500 bg-yellow-500 text-white";
-    case "absent":
-      return "border-gray-500 bg-gray-500 text-white";
-    case "empty":
-      if (hasChildren) {
-        return "border-gray-500 dark:border-gray-300 md:border-[2.5px]";
-      }
-      return "border-gray-400";
-    default:
-      return "";
-  }
-};
+const BaseStyledTile = tw.div.cva(
+  "grid place-items-center border-2 text-xl uppercase select-none md:text-2xl dark:text-white",
+  {
+    variants: {
+      $variant: {
+        correct: "border-green-500 bg-green-500 text-white",
+        present: "border-yellow-500 bg-yellow-500 text-white",
+        absent: "border-gray-500 bg-gray-500 text-white",
+        empty: "border-gray-400",
+      },
+      $hasChildren: {
+        true: "",
+        false: "",
+      },
+    },
+    compoundVariants: [
+      {
+        $variant: "empty",
+        $hasChildren: true,
+        class: "border-gray-500 dark:border-gray-300 md:border-[2.5px]",
+      },
+    ],
+  },
+);
+
+const StyledTile = motion(BaseStyledTile);
 
 const getAnimationProps = (variant: GameTile["variant"], delay = 0) => {
   const shouldAnimate = variant !== "empty";
@@ -81,25 +87,19 @@ const Tile: FC<TileProps> = ({
 
   return (
     <div
-      className={clsx(
-        "preserve-3d",
-        "origin-center scale-90 sm:scale-100 lg:scale-110",
-      )}
+      className="preserve-3d origin-center scale-90 sm:scale-100 lg:scale-110"
       style={containerStyle}
     >
-      <motion.div
+      <StyledTile
         {...getAnimationProps(variant, delay)}
-        className={clsx(
-          "grid place-items-center border-2 text-xl uppercase select-none md:text-2xl",
-          "dark:text-white",
-          getVariantStyles(variant, hasChildren),
-        )}
+        $variant={variant}
+        $hasChildren={hasChildren}
         style={tileStyle}
       >
         <motion.span {...getLetterAnimationProps(variant, delay)}>
           {children}
         </motion.span>
-      </motion.div>
+      </StyledTile>
     </div>
   );
 };
