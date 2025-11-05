@@ -1,0 +1,15 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# react
+
+React usage and conventions.
+
+- Use functional components and hooks.
+- Components in `src/components/`.
+- Prefer composition, use `useState`, `useEffect`, custom hooks.
+- Use `@uidotdev/usehooks`, `unstated-next` for state.
+- Docs: https://react.dev

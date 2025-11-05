@@ -1,0 +1,20 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# bun
+
+Bun package manager and JS/TS runtime usage.
+
+- Install: `curl -fsSL https://bun.sh/install | bash` (add to PATH)
+- Install deps: `bun install` (uses package.json)
+- Add/remove deps: `bun add <pkg>`, `bun remove <pkg>`
+- Lockfile: `bun.lockb`
+- Scripts: define in package.json, run with `bun run <script>`
+- Run code: `bun <file>` (JS/TS/ESM/JSX supported)
+- Test: `bun test` (matches `*.test.{js,ts,jsx,tsx}`)
+- Prefer `bun install` over npm/yarn in Bun projects
+- Bun is fast, mostly npm-compatible, not all Node APIs supported
+- Docs: https://bun.sh/docs

@@ -1,0 +1,18 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# directory-structure
+
+Project src/ directory conventions.
+
+- `components/`: UI components
+- `app/`: Next.js app directory (routes, layouts)
+- `features/`: Feature modules
+- `layouts/`: Layout components
+- `lib/`: Utility libraries
+- `data/`: Static/dynamic data
+- `styles/`: Global/modular styles
+- `experiments/`: Experimental code, mini apps

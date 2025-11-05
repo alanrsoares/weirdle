@@ -1,0 +1,15 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# nextjs
+
+Next.js usage and conventions.
+
+- Use `next dev`, `next build`, `next start` for dev/build/prod.
+- App directory: `src/app/` (routing, layouts, pages).
+- File-based routing, layouts, and server components (Next.js 13+).
+- Env vars: use `.env.local`.
+- Docs: https://nextjs.org/docs

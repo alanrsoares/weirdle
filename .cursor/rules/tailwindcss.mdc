@@ -1,0 +1,14 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+
+# tailwindcss
+
+Tailwind CSS usage.
+
+- Config: `tailwind.config.ts`.
+- Use utility classes in JSX/TSX.
+- Plugins: `@tailwindcss/typography`, `tailwindcss-animate`, `tailwind-merge`.
+- Docs: https://tailwindcss.com/docs
