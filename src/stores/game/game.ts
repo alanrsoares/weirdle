@@ -51,9 +51,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
         store.state = INITIAL_STATE;
       });
 
-      toast.info("You can play again now!", {
-        onDismiss: this.init.bind(this),
-      });
+      this.init();
     },
     /**
      * Attempts guessing a wordle
@@ -107,6 +105,13 @@ export const useGameStore = createStore(INITIAL_STATE, {
         if (!isLastRow) {
           state.cursor.y++;
           state.cursor.x = 0;
+        }
+
+        // Update game status
+        if (won) {
+          state.status = "won";
+        } else if (isLastRow) {
+          state.status = "lost";
         }
       });
 

@@ -8,6 +8,7 @@ import HelpModal from "~/components/HelpModal";
 import Keyboard, { isMappableKey } from "~/components/Keyboard";
 import SettingsModal from "~/components/SettingsModal";
 import StatsModal from "~/components/StatsModal";
+import { Button } from "~/components/ui/button";
 import { useGameStore, type GameTile } from "~/stores/game";
 import { useStatsStore } from "~/stores/stats";
 
@@ -65,6 +66,13 @@ export default function Home() {
           </div>
         )}
         <Grid data={gameState.grid} />
+        {gameState.status === "won" && (
+          <div className="flex justify-center pt-4">
+            <Button onClick={gameActions.reset} size="lg">
+              New Game
+            </Button>
+          </div>
+        )}
         <div className="flex-1 md:hidden"></div>
         <Keyboard
           usedKeys={keys as Record<string, GameTile[]>}
