@@ -2,16 +2,6 @@
 
 import { useState, type FC } from "react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -34,7 +24,7 @@ export type Props = {
 const SettingsModal: FC<Props> = (props) => {
   const { actions, state } = useGameStore();
   const { actions: statsActions } = useStatsStore();
-  const [showResetDialog, setShowResetDialog] = useState(false);
+  const [showConfirmReset, setShowConfirmReset] = useState(false);
 
   const handleDarkModeChange = (checked: boolean) => {
     // Only toggle if the value doesn't match current state
@@ -45,82 +35,104 @@ const SettingsModal: FC<Props> = (props) => {
 
   const handleResetStats = () => {
     statsActions.resetStats();
-    setShowResetDialog(false);
+    setShowConfirmReset(false);
+    props.onClose();
+  };
+
+  const handleCancelReset = () => {
+    setShowConfirmReset(false);
   };
 
   return (
-    <>
-      <Dialog
-        open={props.open}
-        onOpenChange={(open) => !open && props.onClose()}
-      >
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Settings</DialogTitle>
-            <DialogDescription>
-              Customize your game experience and preferences.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-6 py-4">
-            {/* Dark Mode Setting */}
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="dark-mode" className="text-base font-semibold">
-                  Dark mode
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  Toggle between light and dark themes
-                </p>
-              </div>
-              <Switch
-                id="dark-mode"
-                checked={state.darkMode}
-                onCheckedChange={handleDarkModeChange}
-              />
-            </div>
-
-            <Separator />
-
-            {/* Reset Stats Section */}
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col gap-1.5">
-                <Label className="text-base font-semibold">Statistics</Label>
-                <p className="text-sm text-muted-foreground">
-                  Clear all your game statistics and start fresh
-                </p>
-              </div>
+    <Dialog
+      open={props.open}
+      onOpenChange={(open) => {
+        if (!open) {
+          setShowConfirmReset(false);
+          props.onClose();
+        }
+      }}
+    >
+      <DialogContent className="sm:max-w-[425px]">
+        {showConfirmReset ? (
+          <>
+            <DialogHeader>
+              <DialogTitle>Reset Statistics</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to reset all your statistics? This action
+                cannot be undone and will permanently delete all your game data,
+                including wins, losses, streaks, and distribution history.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={handleCancelReset}
+                className="w-full sm:w-auto"
+              >
+                Cancel
+              </Button>
               <Button
                 variant="destructive"
-                onClick={() => setShowResetDialog(true)}
+                onClick={handleResetStats}
                 className="w-full sm:w-auto"
               >
                 Reset Statistics
               </Button>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Settings</DialogTitle>
+              <DialogDescription>
+                Customize your game experience and preferences.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-6 py-4">
+              {/* Dark Mode Setting */}
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <Label
+                    htmlFor="dark-mode"
+                    className="text-base font-semibold"
+                  >
+                    Dark mode
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Toggle between light and dark themes
+                  </p>
+                </div>
+                <Switch
+                  id="dark-mode"
+                  checked={state.darkMode}
+                  onCheckedChange={handleDarkModeChange}
+                />
+              </div>
 
-      {/* Reset Stats Confirmation Dialog */}
-      <AlertDialog open={showResetDialog} onOpenChange={setShowResetDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Reset Statistics</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to reset all your statistics? This action
-              cannot be undone and will permanently delete all your game data,
-              including wins, losses, streaks, and distribution history.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleResetStats}>
-              Reset Statistics
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+              <Separator />
+
+              {/* Reset Stats Section */}
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <Label className="text-base font-semibold">Statistics</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Clear all your game statistics and start fresh
+                  </p>
+                </div>
+                <Button
+                  variant="destructive"
+                  onClick={() => setShowConfirmReset(true)}
+                  className="w-full sm:w-auto"
+                >
+                  Reset Statistics
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 

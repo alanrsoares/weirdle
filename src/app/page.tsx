@@ -67,7 +67,7 @@ export default function Home() {
         )}
         <Grid data={gameState.grid} />
         {gameState.status === "won" && (
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center my-4 md:-translate-y-4">
             <Button onClick={gameActions.reset} size="lg">
               New Game
             </Button>
