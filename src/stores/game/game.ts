@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-import { filter, flatten, groupBy, pipe, prop, reject } from "ramda";
+import { flatten, groupBy, pipe, prop, reject } from "ramda";
 import { createStore, type Selector } from "zustand-immer-store";
 
 import * as api from "~/lib/api-client";
@@ -10,201 +10,162 @@ import type { GameTile } from "./types";
 
 export type GameState = typeof INITIAL_STATE;
 
+const PLAYING_STATUS = { status: "playing" as const };
+
 export const useGameStore = createStore(INITIAL_STATE, {
-  createActions: (set, get) => ({
-    async init() {
-      const rawPersistedState = localStorage.getItem(STORAGE_KEY);
-
-      const persistedState = rawPersistedState
-        ? JSON.parse(rawPersistedState)
-        : get().state;
-
-      if (persistedState) {
-        if (
-          persistedState.darkMode &&
-          !document.body.classList.contains("dark")
-        ) {
-          document.body.classList.add("dark");
-        }
-      }
-
-      if (persistedState?.secret) {
-        set((store) => {
-          store.state = persistedState;
-        });
-        return;
-      }
-
+  createActions: (set, get) => {
+    const updateSecret = async () => {
       set((store) => {
         store.state.isLoading = true;
       });
 
-      const result = await api.getSecretWord();
+      const { secret } = await api.getSecretWord();
 
       set((store) => {
         store.state.isLoading = false;
-        store.state.secret = result.secret;
+        store.state.secret = secret;
       });
-    },
-    reset() {
-      set((store) => {
-        store.state = INITIAL_STATE;
-      });
+    };
 
-      this.init();
-    },
-    /**
-     * Attempts guessing a wordle
-     * @returns
-     */
-    async guess(): Promise<
-      | { status: "win"; guess: string; attempts: number }
-      | { status: "loss"; guess: string; attempts: number }
-      | { status: "playing" }
-    > {
-      const { cursor, grid } = get().state;
-
-      if (cursor.x !== grid[0].length - 1) {
-        return { status: "playing" };
+    const applyDarkMode = (enabled: boolean) => {
+      if (enabled && !document.body.classList.contains("dark")) {
+        document.body.classList.add("dark");
       }
+    };
 
-      const guessWord = getRowWord(grid[cursor.y]);
+    return {
+      async init() {
+        const rawPersistedState = localStorage.getItem(STORAGE_KEY);
+        const persistedState = rawPersistedState
+          ? JSON.parse(rawPersistedState)
+          : get().state;
 
-      if (guessWord.length !== 5) {
-        return {
-          status: "playing",
-        };
-      }
-
-      try {
-        const result = await api.verifyWord(guessWord);
-
-        if (!result.valid) {
-          toast.error(`Not in word list: ${guessWord}`);
-          return {
-            status: "playing",
-          };
-        }
-      } catch (error) {
-        console.log("Failed to verify word: %e", error);
-      }
-
-      const { state } = get();
-
-      const won = state.secret === guessWord;
-
-      const attempts = state.cursor.y + 1;
-      const isLastRow = state.cursor.y === state.grid.length - 1;
-
-      set(({ state }) => {
-        state.grid[state.cursor.y] = getNextRow(
-          state.grid[state.cursor.y],
-          state.secret,
-        );
-
-        if (!isLastRow) {
-          state.cursor.y++;
-          state.cursor.x = 0;
+        if (persistedState?.darkMode) {
+          applyDarkMode(persistedState.darkMode);
         }
 
-        // Update game status
-        if (won) {
-          state.status = "won";
-        } else if (isLastRow) {
-          state.status = "lost";
-        }
-      });
-
-      if (won) {
-        toast.success("Damn son, you good! 🎉", {
-          onDismiss: this.reset.bind(this),
-        });
-      } else {
-        if (isLastRow) {
-          toast.warning("Not today, my dude =/", {
-            onDismiss: this.reset.bind(this),
+        if (persistedState?.secret) {
+          set((store) => {
+            store.state = persistedState;
           });
-        }
-      }
-
-      return {
-        status: !isLastRow && !won ? "playing" : won ? "win" : "loss",
-        guess: guessWord,
-        attempts,
-      };
-    },
-    /**
-     *  Delete tiles from right to left
-     */
-    delete() {
-      set(({ state }) => {
-        const lastNonEmptyTile = findLastNonEmptyTile(
-          state.grid[state.cursor.y],
-        );
-
-        if (!lastNonEmptyTile) {
-          // nothing to to here :jetpack:
           return;
         }
 
-        // set cursor to lastNonEmptyTile's cursor
-        state.cursor = lastNonEmptyTile.cursor;
-        const { y, x } = state.cursor;
+        await updateSecret();
+      },
+      async reset() {
+        set((store) => {
+          store.state = INITIAL_STATE;
+        });
+        localStorage.removeItem(STORAGE_KEY);
+        await updateSecret();
+      },
+      async guess(): Promise<
+        | { status: "win"; guess: string; attempts: number }
+        | { status: "loss"; guess: string; attempts: number }
+        | { status: "playing" }
+      > {
+        const { cursor, grid } = get().state;
 
-        const target = state.grid[y][x];
-
-        target.children = "";
-        target.variant = "empty";
-      });
-    },
-    /**
-     * Insert new keys from left to right
-     * @param key
-     */
-    insert(key: string) {
-      set(({ state }) => {
-        const { cursor } = state;
-        const row = state.grid[cursor.y];
-        const tile = row[cursor.x];
-
-        const isLastColumn = cursor.x === row.length - 1;
-
-        state.grid[cursor.y][cursor.x] = {
-          ...tile,
-          children: key,
-        };
-
-        if (!isLastColumn) {
-          state.cursor.x++;
-          filter;
+        if (cursor.x !== grid[0].length - 1) {
+          return PLAYING_STATUS;
         }
-      });
-    },
-    openModal(modalKind: ModalKind) {
-      set(({ state }) => {
-        state.activeModal = modalKind;
-      });
-    },
-    closeModal() {
-      set(({ state }) => {
-        state.activeModal = null;
-      });
-    },
-    toggleDarkMode() {
-      set(({ state }) => {
-        state.darkMode = !state.darkMode;
-        document.body.classList.toggle("dark");
-      });
-    },
-  }),
+
+        const guessWord = getRowWord(grid[cursor.y]);
+
+        if (guessWord.length !== 5) {
+          return PLAYING_STATUS;
+        }
+
+        try {
+          const { valid } = await api.verifyWord(guessWord);
+          if (!valid) {
+            toast.error(`Not in word list: ${guessWord}`);
+            return PLAYING_STATUS;
+          }
+        } catch (error) {
+          console.log("Failed to verify word: %e", error);
+        }
+
+        const { state } = get();
+        const won = state.secret === guessWord;
+        const attempts = state.cursor.y + 1;
+        const isLastRow = state.cursor.y === state.grid.length - 1;
+
+        set(({ state }) => {
+          state.grid[state.cursor.y] = getNextRow(
+            state.grid[state.cursor.y],
+            state.secret,
+          );
+
+          if (!isLastRow) {
+            state.cursor.y++;
+            state.cursor.x = 0;
+          }
+
+          state.status = won ? "won" : isLastRow ? "lost" : state.status;
+        });
+
+        const resetCallback = { onDismiss: this.reset.bind(this) };
+        if (won) {
+          toast.success("Damn son, you good! 🎉", resetCallback);
+        } else if (isLastRow) {
+          toast.warning("Not today, my dude =/", resetCallback);
+        }
+
+        return {
+          status: !isLastRow && !won ? "playing" : won ? "win" : "loss",
+          guess: guessWord,
+          attempts,
+        };
+      },
+      delete() {
+        set(({ state }) => {
+          const lastNonEmptyTile = findLastNonEmptyTile(
+            state.grid[state.cursor.y],
+          );
+          if (!lastNonEmptyTile) return;
+
+          state.cursor = lastNonEmptyTile.cursor;
+          const { y, x } = state.cursor;
+          state.grid[y][x] = { ...state.grid[y][x], children: "", variant: "empty" };
+        });
+      },
+      insert(key: string) {
+        set(({ state }) => {
+          const { cursor } = state;
+          state.grid[cursor.y][cursor.x] = {
+            ...state.grid[cursor.y][cursor.x],
+            children: key,
+          };
+          if (cursor.x < state.grid[cursor.y].length - 1) {
+            state.cursor.x++;
+          }
+        });
+      },
+      openModal(modalKind: ModalKind) {
+        set(({ state }) => {
+          state.activeModal = modalKind;
+        });
+      },
+      closeModal() {
+        set(({ state }) => {
+          state.activeModal = null;
+        });
+      },
+      toggleDarkMode() {
+        set(({ state }) => {
+          state.darkMode = !state.darkMode;
+          document.body.classList.toggle("dark");
+        });
+      },
+    };
+  },
   selectors: {
-    /**
-     * Get UNIQUE keys used in the current grid
-     */
     getUsedKeys: pipe(
       prop("grid"),
       flatten,
-      reject((tile: GameTile) => tile.children === ""),
+      reject<GameTile>((tile) => tile.children === ""),
       groupBy(prop("children")),
     ),
   },

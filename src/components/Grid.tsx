@@ -1,4 +1,5 @@
 import Tile, { type TileProps } from "./Tile";
+import tw from "styled-cva";
 
 type Props = {
   data: TileProps[][];
@@ -20,11 +21,13 @@ export const GridRow = (props: { data: TileProps[] }) => {
   );
 };
 
+const BaseGrid = tw.div`grid gap-3 md:gap-4`;
+
 export default function Grid(props: Props) {
   return (
-    <div className="m-auto grid h-min max-w-sm gap-4">
+    <BaseGrid className="m-auto h-min max-w-sm">
       {props.data.map((row, i) => (
-        <div key={`row-${i}`} className="grid grid-cols-5 gap-4">
+        <BaseGrid key={`row-${i}`} className="grid-cols-5">
           {row.map((tile, j) => (
             <Tile
               key={`${tile.cursor.y}-${tile.cursor.x}-${tile.variant}`}
@@ -35,8 +38,8 @@ export default function Grid(props: Props) {
               {tile.children}
             </Tile>
           ))}
-        </div>
+        </BaseGrid>
       ))}
-    </div>
+    </BaseGrid>
   );
 }
