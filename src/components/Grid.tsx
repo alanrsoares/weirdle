@@ -5,9 +5,11 @@ type Props = {
   data: TileProps[][];
 };
 
+const BaseGrid = tw.div`grid gap-3 md:gap-4`;
+
 export const GridRow = (props: { data: TileProps[] }) => {
   return (
-    <div className="grid grid-cols-5 gap-4">
+    <BaseGrid className="grid-cols-5">
       {props.data.map((tile) => (
         <Tile
           key={`${tile.cursor.y}-${tile.cursor.x}-${tile.variant}`}
@@ -17,11 +19,9 @@ export const GridRow = (props: { data: TileProps[] }) => {
           {tile.children}
         </Tile>
       ))}
-    </div>
+    </BaseGrid>
   );
 };
-
-const BaseGrid = tw.div`grid gap-3 md:gap-4`;
 
 export default function Grid(props: Props) {
   return (
