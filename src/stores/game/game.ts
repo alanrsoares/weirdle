@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 import { filter, flatten, groupBy, pipe, prop, reject } from "ramda";
 import { createStore, type Selector } from "zustand-immer-store";
@@ -52,7 +52,7 @@ export const useGameStore = createStore(INITIAL_STATE, {
       });
 
       toast.info("You can play again now!", {
-        onClose: this.init.bind(this),
+        onDismiss: this.init.bind(this),
       });
     },
     /**
@@ -112,12 +112,12 @@ export const useGameStore = createStore(INITIAL_STATE, {
 
       if (won) {
         toast.success("Damn son, you good! 🎉", {
-          onClose: this.reset.bind(this),
+          onDismiss: this.reset.bind(this),
         });
       } else {
         if (isLastRow) {
-          toast.warn("Not today, my dude =/", {
-            onClose: this.reset.bind(this),
+          toast.warning("Not today, my dude =/", {
+            onDismiss: this.reset.bind(this),
           });
         }
       }

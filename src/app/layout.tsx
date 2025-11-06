@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import "../styles/globals.css";
 
-import ToastProvider from "~/components/ToastProvider";
+import { Toaster } from "~/components/ui/sonner";
 import { capitalize } from "~/lib/utils";
 import { APP_NAME } from "~/stores/game/constants";
 
@@ -32,7 +32,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ToastProvider />
+        <Toaster />
         {children}
         <a
           href="https://github.com/alanrsoares/weirdle"
