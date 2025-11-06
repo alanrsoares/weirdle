@@ -56,6 +56,8 @@ export default function Home() {
     [gameActions, statsActions],
   );
 
+  const isGameOver = gameState.status === "won" || gameState.status === "lost";
+
   return (
     <div className="m-auto flex h-screen w-full flex-col dark:bg-gray-700">
       <Header onIconClick={gameActions.openModal} />
@@ -66,7 +68,7 @@ export default function Home() {
           </div>
         )}
         <Grid data={gameState.grid} />
-        {gameState.status === "won" && (
+        {isGameOver && (
           <div className="flex justify-center my-4 md:-translate-y-4">
             <Button onClick={gameActions.reset} size="lg">
               New Game
