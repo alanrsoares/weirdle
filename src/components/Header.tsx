@@ -8,17 +8,17 @@ type Props = {
 
 export default function Header(props: Props) {
   return (
-    <header className="w-full border-b-2 bg-brand p-4 dark:border-gray-800">
-      <div className="m-auto flex max-w-lg justify-between">
-        <div className="flex gap-2">
+    <header className="w-full border-b border-brand/20 bg-brand shadow-sm dark:border-gray-800/50">
+      <div className="m-auto flex max-w-lg items-center justify-between px-4 py-3.5">
+        <div className="flex gap-1.5">
           <IconButton onClick={props.onIconClick.bind(null, "help")}>
             <HelpIcon />
           </IconButton>
         </div>
-        <div className="pointer-events-none text-center text-4xl font-bold tracking-widest text-white uppercase">
+        <div className="pointer-events-none text-center text-3xl font-bold tracking-[0.2em] text-white uppercase md:text-4xl">
           {APP_NAME}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           <IconButton onClick={props.onIconClick.bind(null, "stats")}>
             <BarChartIcon />
           </IconButton>

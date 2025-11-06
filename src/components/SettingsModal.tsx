@@ -89,17 +89,17 @@ const SettingsModal: FC<Props> = (props) => {
                 Customize your game experience and preferences.
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-6 py-4">
+            <div className="grid gap-6 py-2">
               {/* Dark Mode Setting */}
               <div className="flex items-center justify-between gap-4">
                 <div className="flex flex-col gap-1.5">
                   <Label
                     htmlFor="dark-mode"
-                    className="text-base font-semibold"
+                    className="text-base font-semibold text-foreground"
                   >
                     Dark mode
                   </Label>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     Toggle between light and dark themes
                   </p>
                 </div>
@@ -113,17 +113,17 @@ const SettingsModal: FC<Props> = (props) => {
               <Separator />
 
               {/* Reset Stats Section */}
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3.5">
                 <div className="flex flex-col gap-1.5">
-                  <Label className="text-base font-semibold">Statistics</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <Label className="text-base font-semibold text-foreground">Statistics</Label>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     Clear all your game statistics and start fresh
                   </p>
                 </div>
                 <Button
                   variant="destructive"
                   onClick={() => setShowConfirmReset(true)}
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto shadow-sm hover:shadow-md transition-shadow"
                 >
                   Reset Statistics
                 </Button>

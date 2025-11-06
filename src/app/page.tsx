@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
+import tw from "styled-cva";
 
 import Grid from "~/components/Grid";
 import Header from "~/components/Header";
@@ -8,6 +9,7 @@ import HelpModal from "~/components/HelpModal";
 import Keyboard, { isMappableKey } from "~/components/Keyboard";
 import SettingsModal from "~/components/SettingsModal";
 import StatsModal from "~/components/StatsModal";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { useGameStore, type GameTile } from "~/stores/game";
 import { useStatsStore } from "~/stores/stats";
@@ -59,28 +61,34 @@ export default function Home() {
   const isGameOver = gameState.status === "won" || gameState.status === "lost";
 
   return (
-    <div className="m-auto flex h-screen w-full flex-col dark:bg-gray-700">
+    <div className="m-auto flex h-screen w-full flex-col bg-gray-50 dark:bg-gray-900">
       <Header onIconClick={gameActions.openModal} />
-      <main className="m-auto flex max-w-lg flex-1 flex-col justify-between p-4">
+      <main className="relative m-auto flex max-w-lg flex-1 flex-col justify-between px-4 py-6 md:py-8">
         {process.env.NODE_ENV === "development" && (
-          <div className="border bg-gray-100 p-2 text-center font-mono tracking-widest uppercase dark:text-primary-foreground">
-            {gameState.secret}
-          </div>
+          <Badge className="absolute top-2 right-2">{gameState.secret}</Badge>
         )}
-        <Grid data={gameState.grid} />
+        <div className="flex items-center justify-center py-4 md:py-6">
+          <Grid data={gameState.grid} />
+        </div>
         {isGameOver && (
-          <div className="flex justify-center my-4 md:-translate-y-4">
-            <Button onClick={gameActions.reset} size="lg">
+          <div className="flex justify-center py-4 md:py-6">
+            <Button
+              onClick={gameActions.reset}
+              size="lg"
+              className="shadow-md hover:shadow-lg transition-shadow"
+            >
               New Game
             </Button>
           </div>
         )}
         <div className="flex-1 md:hidden"></div>
-        <Keyboard
-          usedKeys={keys as Record<string, GameTile[]>}
-          disabled={gameState.isLoading}
-          onKeyPress={handleKeyPress}
-        />
+        <div className="pb-4 md:pb-6">
+          <Keyboard
+            usedKeys={keys as Record<string, GameTile[]>}
+            disabled={gameState.isLoading}
+            onKeyPress={handleKeyPress}
+          />
+        </div>
       </main>
       <HelpModal
         open={gameState.activeModal === "help"}

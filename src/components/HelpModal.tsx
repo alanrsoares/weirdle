@@ -30,26 +30,30 @@ export default function HelpModal(props: Props) {
           </DialogDescription>
         </DialogHeader>
 
-        <section className="grid gap-4 py-4">
-          <header className="grid gap-2 md:gap-3">
-            <h1 className="text-lg font-medium">
+        <section className="grid gap-6 py-2">
+          <header className="grid gap-3">
+            <h1 className="text-lg font-semibold leading-tight text-foreground">
               Guess the <span className="font-bold">word</span> in 6 tries.
             </h1>
-            <p className="text-sm text-muted-foreground">
-              Each guess must be a valid 5 letter word. Hit the enter button to
-              submit.
-            </p>
-            <p className="text-sm text-muted-foreground">
-              After each guess, the color of the tiles will change to show how
-              close your guess was to the word.
-            </p>
+            <div className="space-y-2">
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Each guess must be a valid 5 letter word. Hit the enter button
+                to submit.
+              </p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                After each guess, the color of the tiles will change to show how
+                close your guess was to the word.
+              </p>
+            </div>
           </header>
 
           <Separator />
 
-          <div className="grid gap-4">
-            <div className="font-medium">Examples</div>
-            <div className="m-auto grid max-w-sm gap-4 text-center">
+          <div className="grid gap-5">
+            <div className="text-sm font-semibold tracking-wide text-foreground uppercase">
+              Examples
+            </div>
+            <div className="m-auto grid max-w-sm gap-5 text-center">
               <HelpItem word="weary" letter="w" variant="correct" />
               <HelpItem word="pills" letter="i" variant="present" />
               <HelpItem word="vague" letter="u" variant="absent" />
@@ -67,7 +71,7 @@ function HelpItem(props: {
   variant: GameTile["variant"];
 }) {
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-3">
       <GridRow
         data={[...props.word].map((key, i) => ({
           children: key,
@@ -75,8 +79,11 @@ function HelpItem(props: {
           variant: key === props.letter ? props.variant : "empty",
         }))}
       />
-      <legend>
-        The letter <span className="font-bold uppercase">{props.letter}</span>{" "}
+      <legend className="text-sm leading-relaxed text-muted-foreground">
+        The letter{" "}
+        <span className="font-semibold text-foreground uppercase">
+          {props.letter}
+        </span>{" "}
         is{" "}
         {match(props.variant)
           .with("correct", always("in the word and in the correct spot"))

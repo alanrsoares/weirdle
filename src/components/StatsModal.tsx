@@ -51,23 +51,23 @@ const StatsModal: FC<Props> = (props) => {
     <Dialog open={props.open} onOpenChange={(open) => !open && props.onClose()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-bold tracking-wide uppercase">
+          <DialogTitle className="text-center text-2xl font-bold tracking-[0.1em] uppercase">
             Statistics
           </DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogDescription className="text-center text-sm leading-relaxed">
             Track your game performance and progress over time.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-6 py-4">
+        <div className="grid gap-6 py-2">
           {/* Stats Grid */}
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-4 gap-2.5">
             {stats.map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col items-center justify-center gap-1 rounded-lg border bg-card p-3 text-center"
+                className="flex flex-col items-center justify-center gap-1.5 rounded-lg border border-border bg-card p-3.5 text-center shadow-sm"
               >
-                <div className="text-2xl font-bold text-foreground">
+                <div className="text-2xl font-bold leading-none text-foreground">
                   {stat.value}
                 </div>
                 <div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
@@ -80,11 +80,11 @@ const StatsModal: FC<Props> = (props) => {
           <Separator />
 
           {/* Distribution Chart */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="text-center text-sm font-semibold tracking-wide text-muted-foreground uppercase">
               Guess Distribution
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {state.distribution.map((value, index) => {
                 const percentage = state.wins
                   ? (value / maxDistributionValue) * 100
@@ -94,17 +94,17 @@ const StatsModal: FC<Props> = (props) => {
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-2 text-sm font-medium"
+                    className="flex items-center gap-2.5 text-sm font-medium"
                   >
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted font-semibold text-foreground">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted font-semibold text-foreground shadow-sm">
                       {index + 1}
                     </div>
-                    <div className="relative flex h-8 flex-1 items-center overflow-hidden rounded-md bg-muted">
+                    <div className="relative flex h-8 flex-1 items-center overflow-hidden rounded-md bg-muted shadow-sm">
                       <div
                         className={cn(
-                          "flex h-full items-center justify-end px-2 transition-all duration-500",
+                          "flex h-full items-center justify-end px-2.5 transition-all duration-500",
                           hasValue
-                            ? "bg-primary text-primary-foreground"
+                            ? "bg-primary text-primary-foreground shadow-sm"
                             : "bg-muted",
                         )}
                         style={{

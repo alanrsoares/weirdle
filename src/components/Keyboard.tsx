@@ -67,11 +67,11 @@ const Keyboard: FC<Props> = ({ onKeyPress, disabled, usedKeys }) => {
           tiles.find(isVariant("absent"));
 
         return {
-          color: tile?.variant ? "white" : "black",
+          color: tile?.variant ? "white" : undefined,
           background: match(tile?.variant ?? "empty")
-            .with("absent", always("rgb(75 85 99)"))
-            .with("correct", always("rgb(34 197 94)"))
-            .with("present", always("rgb(234 179 8)"))
+            .with("absent", always("rgb(107 114 128)")) // gray-500 (better for dark mode)
+            .with("correct", always("rgb(34 197 94)")) // green-500 (works well in both)
+            .with("present", always("rgb(234 179 8)")) // yellow-400 (works well in both)
             .otherwise(always("")),
         };
       }
@@ -113,7 +113,8 @@ const Keyboard: FC<Props> = ({ onKeyPress, disabled, usedKeys }) => {
 export default Keyboard;
 
 export const KeyButton = tw.button`
-  bg-gray-300 hover:bg-gray-400 active:opacity-60 md:p-3 
+  bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 
+  dark:text-white active:opacity-60 md:p-3 
   p-2 rounded-md md:text-xl sm:text-sm text-xs font-bold transition-all 
   md:min-w-10
   min-w-[1.85rem]

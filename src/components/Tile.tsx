@@ -17,14 +17,14 @@ const LETTER_DELAY_OFFSET = 0.5;
 const FLIP_ROTATION = "rotateX(180deg)";
 
 const BaseStyledTile = tw.div.cva(
-  "grid place-items-center border-2 text-xl uppercase select-none md:text-2xl dark:text-white",
+  "grid place-items-center border-2 text-xl uppercase select-none md:text-2xl dark:text-white font-semibold tracking-wider shadow-sm transition-all duration-200",
   {
     variants: {
       $variant: {
-        correct: "border-green-500 bg-green-500 text-white",
-        present: "border-yellow-500 bg-yellow-500 text-white",
-        absent: "border-gray-500 bg-gray-500 text-white",
-        empty: "border-gray-400",
+        correct: "border-green-600 bg-green-600 text-white shadow-md shadow-green-600/20",
+        present: "border-yellow-500 bg-yellow-500 text-white shadow-md shadow-yellow-500/20",
+        absent: "border-gray-400 bg-gray-400 text-white shadow-md shadow-gray-400/20 dark:border-gray-500 dark:bg-gray-500",
+        empty: "border-gray-300 bg-transparent dark:border-gray-600",
       },
       $hasChildren: {
         true: "",
@@ -35,7 +35,7 @@ const BaseStyledTile = tw.div.cva(
       {
         $variant: "empty",
         $hasChildren: true,
-        class: "border-gray-500 dark:border-gray-300 md:border-[2.5px]",
+        class: "border-gray-400 bg-gray-50 dark:border-gray-500 dark:bg-gray-800/50 md:border-[2.5px] shadow-sm",
       },
     ],
   },
