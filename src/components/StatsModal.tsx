@@ -1,14 +1,30 @@
+"use client";
+
 import { useMemo, type FC } from "react";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "~/components/ui/dialog";
+import { Separator } from "~/components/ui/separator";
 import { useStatsStore } from "~/stores/stats";
-import Modal, { type Props as ModalProps } from "./Modal";
+import { cn } from "~/lib/utils";
 
-export type Props = Pick<ModalProps, "open" | "onClose">;
+export type Props = {
+  open: boolean;
+  onClose: (open: boolean) => void;
+};
 
 const StatsModal: FC<Props> = (props) => {
   const { state } = useStatsStore();
 
   const totalPlayed = state.wins + state.losses;
+  const winPercentage = !state.wins
+    ? 0
+    : (state.wins / totalPlayed) * 100;
+  const maxDistributionValue = Math.max(...state.distribution, 1);
 
   const stats = useMemo(
     () => [
@@ -18,7 +34,7 @@ const StatsModal: FC<Props> = (props) => {
       },
       {
         label: "Win %",
-        value: (!state.wins ? 0 : (state.wins / totalPlayed) * 100).toFixed(0),
+        value: `${winPercentage.toFixed(0)}%`,
       },
       {
         label: "Current Streak",
@@ -29,45 +45,83 @@ const StatsModal: FC<Props> = (props) => {
         value: state.maxStreak,
       },
     ],
-    [state.currentStreak, state.maxStreak, state.wins, totalPlayed],
+    [state.currentStreak, state.maxStreak, totalPlayed, winPercentage],
   );
 
   return (
-    <Modal title="Statistics" open={props.open} onClose={props.onClose}>
-      <div className="grid min-h-[20vh] w-full gap-8 pb-4">
-        <div className="flex w-full gap-2 text-black">
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="grid flex-1 place-items-center gap-2 rounded-lg bg-slate-200 p-2 px-3 text-center dark:bg-slate-700"
-            >
-              <div className="text-sm font-bold text-gray-600 dark:text-white">
-                {stat.label}
-              </div>
-              <div className="dark:text-slate-100">{stat.value}</div>
-            </div>
-          ))}
-        </div>
-        <div className="grid gap-2">
-          {state.distribution.map((value, index) => (
-            <div
-              key={index}
-              className="flex items-center gap-2 font-mono font-semibold"
-            >
-              <div className="grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white dark:bg-white/50">
-                {index + 1}
-              </div>
+    <Dialog open={props.open} onOpenChange={props.onClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-center text-2xl font-bold uppercase tracking-wide">
+            Statistics
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="grid gap-6 py-4">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-4 gap-2">
+            {stats.map((stat) => (
               <div
-                className="font-white gap-2 rounded-full bg-gray-600 px-2 py-1 text-white dark:bg-slate-50 dark:text-slate-800"
-                style={{ width: `${value ? (value / state.wins) * 100 : 6}%` }}
+                key={stat.label}
+                className="flex flex-col items-center justify-center gap-1 rounded-lg border bg-card p-3 text-center"
               >
-                {value}
+                <div className="text-2xl font-bold text-foreground">
+                  {stat.value}
+                </div>
+                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                  {stat.label}
+                </div>
               </div>
+            ))}
+          </div>
+
+          <Separator />
+
+          {/* Distribution Chart */}
+          <div className="space-y-2">
+            <div className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Guess Distribution
             </div>
-          ))}
+            <div className="space-y-2">
+              {state.distribution.map((value, index) => {
+                const percentage = state.wins
+                  ? (value / maxDistributionValue) * 100
+                  : 0;
+                const hasValue = value > 0;
+
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 text-sm font-medium"
+                  >
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted font-semibold text-foreground">
+                      {index + 1}
+                    </div>
+                    <div className="relative flex h-8 flex-1 items-center overflow-hidden rounded-md bg-muted">
+                      <div
+                        className={cn(
+                          "flex h-full items-center justify-end px-2 transition-all duration-500",
+                          hasValue
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted",
+                        )}
+                        style={{
+                          width: `${hasValue ? Math.max(percentage, 6) : 0}%`,
+                        }}
+                      >
+                        {hasValue && (
+                          <span className="text-xs font-semibold">{value}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 };
 
