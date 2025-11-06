@@ -29,5 +29,14 @@ export const useStatsStore = createStore(INITIAL_STATE, {
         state.currentStreak = 0;
       });
     },
+    resetStats() {
+      set(({ state }) => {
+        state.wins = 0;
+        state.losses = 0;
+        state.currentStreak = 0;
+        state.maxStreak = 0;
+        state.distribution = [0, 0, 0, 0, 0, 0];
+      });
+    },
   }),
 });

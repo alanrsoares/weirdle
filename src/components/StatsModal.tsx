@@ -5,25 +5,24 @@ import { useMemo, type FC } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
 import { Separator } from "~/components/ui/separator";
-import { useStatsStore } from "~/stores/stats";
 import { cn } from "~/lib/utils";
+import { useStatsStore } from "~/stores/stats";
 
 export type Props = {
   open: boolean;
-  onClose: (open: boolean) => void;
+  onClose: () => void;
 };
 
 const StatsModal: FC<Props> = (props) => {
   const { state } = useStatsStore();
 
   const totalPlayed = state.wins + state.losses;
-  const winPercentage = !state.wins
-    ? 0
-    : (state.wins / totalPlayed) * 100;
+  const winPercentage = !state.wins ? 0 : (state.wins / totalPlayed) * 100;
   const maxDistributionValue = Math.max(...state.distribution, 1);
 
   const stats = useMemo(
@@ -49,12 +48,15 @@ const StatsModal: FC<Props> = (props) => {
   );
 
   return (
-    <Dialog open={props.open} onOpenChange={props.onClose}>
+    <Dialog open={props.open} onOpenChange={(open) => !open && props.onClose()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-bold uppercase tracking-wide">
+          <DialogTitle className="text-center text-2xl font-bold tracking-wide uppercase">
             Statistics
           </DialogTitle>
+          <DialogDescription className="text-center">
+            Track your game performance and progress over time.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-6 py-4">
@@ -68,7 +70,7 @@ const StatsModal: FC<Props> = (props) => {
                 <div className="text-2xl font-bold text-foreground">
                   {stat.value}
                 </div>
-                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                <div className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
                   {stat.label}
                 </div>
               </div>
@@ -79,7 +81,7 @@ const StatsModal: FC<Props> = (props) => {
 
           {/* Distribution Chart */}
           <div className="space-y-2">
-            <div className="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            <div className="text-center text-sm font-semibold tracking-wide text-muted-foreground uppercase">
               Guess Distribution
             </div>
             <div className="space-y-2">

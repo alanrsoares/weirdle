@@ -5,11 +5,7 @@ import { createStore, type Selector } from "zustand-immer-store";
 
 import * as api from "~/lib/api-client";
 import { INITIAL_STATE, STORAGE_KEY, type ModalKind } from "./constants";
-import {
-  findLastNonEmptyTile,
-  getNextRow,
-  getRowWord,
-} from "./helpers";
+import { findLastNonEmptyTile, getNextRow, getRowWord } from "./helpers";
 import type { GameTile } from "./types";
 
 export type GameState = typeof INITIAL_STATE;
