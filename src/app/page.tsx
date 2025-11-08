@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import tw from "styled-cva";
 
 import Grid from "~/components/Grid";
 import Header from "~/components/Header";
@@ -75,7 +74,7 @@ export default function Home() {
             <Button
               onClick={gameActions.reset}
               size="lg"
-              className="shadow-md hover:shadow-lg transition-shadow"
+              className="shadow-md transition-shadow hover:shadow-lg"
             >
               New Game
             </Button>
