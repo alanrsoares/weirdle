@@ -43,7 +43,7 @@ export default function RootLayout({
       </head>
       <body>
         <Toaster />
-        <div className="m-auto flex h-screen w-full flex-col bg-gray-50 dark:bg-gray-900">
+        <div className="m-auto flex h-dvh w-full flex-col bg-gray-50 dark:bg-gray-900">
           {children}
         </div>
         <a
