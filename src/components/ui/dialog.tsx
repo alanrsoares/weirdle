@@ -3,7 +3,13 @@
 import * as React from "react";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { motion, type PanInfo } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useTransform,
+  type PanInfo,
+} from "framer-motion";
 import { XIcon } from "lucide-react";
 
 import { cn } from "~/lib/utils";
@@ -69,10 +75,25 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
 }) {
-  const [dragY, setDragY] = React.useState(0);
+  const [isDragging, setIsDragging] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const isDragging = React.useRef(false);
+  const y = useMotionValue(0);
+  const dragY = useTransform(y, (value) => Math.max(0, value));
+
+  // Calculate overlay opacity based on drag distance for visual feedback
+  // Using transform for smooth, performant updates without re-renders
+  const overlayOpacity = useTransform(dragY, (value) => {
+    if (!isMobile || !isDragging) return 1;
+    const maxDrag = 200; // Maximum drag distance for full fade
+    return Math.max(0.3, 1 - value / maxDrag);
+  });
+
+  // Track overlay opacity for style updates
+  const [currentOpacity, setCurrentOpacity] = React.useState(1);
+  useMotionValueEvent(overlayOpacity, "change", (latest) => {
+    setCurrentOpacity(latest);
+  });
 
   // Detect mobile breakpoint
   React.useEffect(() => {
@@ -103,9 +124,28 @@ function DialogContent({
     }
   }, []);
 
+  const handleDragStart = React.useCallback(() => {
+    if (isMobile) {
+      setIsDragging(true);
+    }
+  }, [isMobile]);
+
+  const handleDrag = React.useCallback(
+    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      // Update motion value with drag offset for smooth visual feedback
+      // This ensures the position and opacity update in real-time as the user drags
+      if (isMobile) {
+        // Only track downward drags (positive offset)
+        const offset = Math.max(0, info.offset.y);
+        y.set(offset);
+      }
+    },
+    [isMobile, y],
+  );
+
   const handleDragEnd = React.useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      if (!isDragging.current) return;
+      if (!isMobile) return;
 
       const threshold = 100; // pixels
       const velocityThreshold = 500; // velocity threshold
@@ -116,41 +156,44 @@ function DialogContent({
         (info.offset.y > 50 && info.velocity.y > velocityThreshold)
       ) {
         handleClose();
+      } else {
+        // Snap back to original position
+        y.set(0);
       }
 
       // Reset drag state
-      setDragY(0);
-      isDragging.current = false;
+      setIsDragging(false);
     },
-    [handleClose],
-  );
-
-  const handleDrag = React.useCallback(
-    (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      // Only allow dragging downward and only on mobile
-      if (info.offset.y > 0 && isMobile) {
-        setDragY(info.offset.y);
-        isDragging.current = true;
-      }
-    },
-    [isMobile],
+    [handleClose, isMobile, y],
   );
 
   return (
     <DialogPortal data-slot="dialog-portal">
-      <DialogOverlay />
+      <DialogOverlay
+        style={{
+          opacity: isDragging ? currentOpacity : undefined,
+        }}
+        className={isDragging ? "transition-opacity duration-75" : ""}
+      />
       <motion.div
         ref={contentRef}
         drag={isMobile ? "y" : false}
         dragConstraints={{ top: 0, bottom: 0 }}
         dragElastic={{ top: 0, bottom: 0.2 }}
+        dragMomentum={false}
+        onDragStart={handleDragStart}
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}
-        animate={{ y: dragY }}
-        transition={{ type: "spring", damping: 30, stiffness: 300 }}
         style={{
+          y,
           touchAction: isMobile ? "pan-y" : "auto",
         }}
+        animate={!isDragging ? { y: 0 } : undefined}
+        transition={
+          !isDragging
+            ? { type: "spring", damping: 30, stiffness: 300 }
+            : { duration: 0 }
+        }
         className="sm:pointer-events-none"
       >
         <DialogPrimitive.Content
