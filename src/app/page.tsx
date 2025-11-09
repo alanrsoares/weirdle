@@ -60,7 +60,7 @@ export default function Home() {
   const isGameOver = gameState.status === "won" || gameState.status === "lost";
 
   return (
-    <div className="m-auto flex h-screen w-full flex-col bg-gray-50 dark:bg-gray-900">
+    <>
       <Header onIconClick={gameActions.openModal} />
       <main className="relative m-auto flex max-w-lg flex-1 flex-col justify-between px-4 py-6 md:py-8">
         {process.env.NODE_ENV === "development" && (
@@ -101,6 +101,6 @@ export default function Home() {
         open={gameState.activeModal === "settings"}
         onClose={gameActions.closeModal}
       />
-    </div>
+    </>
   );
 }

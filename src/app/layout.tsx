@@ -13,8 +13,13 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   themeColor: "#6aaa64",
   icons: {
-    icon: [{ url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" }],
-    apple: "/icons/icon-192.png",
+    icon: [
+      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/icon-192.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
 
@@ -30,10 +35,17 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
         />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/icons/icon-192.png"
+        />
       </head>
       <body>
         <Toaster />
-        {children}
+        <div className="m-auto flex h-screen w-full flex-col bg-gray-50 dark:bg-gray-900">
+          {children}
+        </div>
         <a
           href="https://github.com/alanrsoares/weirdle"
           className="github-corner"
