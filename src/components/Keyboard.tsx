@@ -72,6 +72,7 @@ const Keyboard: FC<Props> = ({ onKeyPress, disabled, usedKeys }) => {
             .with("absent", always("rgb(107 114 128)")) // gray-500 (better for dark mode)
             .with("correct", always("rgb(34 197 94)")) // green-500 (works well in both)
             .with("present", always("rgb(234 179 8)")) // yellow-400 (works well in both)
+            .with("empty", always(""))
             .otherwise(always("")),
         };
       }
